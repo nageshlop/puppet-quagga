@@ -15,7 +15,6 @@ class quagga::service::ospfd (
   $content = $::quagga::params::ospfd_content,
 ) {
 
-  include quagga::params
   class { 'quagga::service':
     service  => 'ospfd',
     content  => $content

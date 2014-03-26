@@ -1,0 +1,85 @@
+!
+hostname <%= @fqdn %>
+!
+router bgp <%= $asn %>
+!
+ bgp router-id <%= $router_id %>
+ <%- if @networks4 then -%>
+  <%- @networks4.each do |network| %>
+ network <%= networ %>
+  <%- end %>
+<%- end %>
+!
+<% @peers.each_pair do |as, neighbour| -%>
+  <%- if neighbour['addr4'] then -%>
+    <%- neighbour['addr4'].each do |addr| -%>
+ neighbor <%= addr %> remote-as <%= as %>
+ neighbor <%= addr %> soft-reconfiguration inbound
+ neighbor <%= addr %> prefix-list prefix-v4 out
+      <%- if neighbour['desc'] then -%>
+ neighbor <%= addr %> description <%= neighbour['desc'] %>
+      <%- end -%>
+      <%- if neighbour['localpref'] then -%>
+ neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
+      <%- end -%>
+      <%- if neighbour['multihop'] then -%>
+ neighbor <%= addr %> ebgp-multihop <%= neighbour['desc'] %>
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+  <%- if neighbour['addr6'] then -%>
+    <%- neighbour['addr6'].each do |addr| -%>
+ neighbor <%= addr %> remote-as <%= as %>
+ no neighbor <%= n6 %> activate
+      <%- if neighbour['desc'] then -%>
+ neighbor <%= addr %> description <%= neighbour['desc'] %>
+      <%- end -%>
+      <%- if neighbour['localpref'] then -%>
+ neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
+      <%- end -%>
+      <%- if neighbour['multihop'] then -%>
+ neighbor <%= addr %> ebgp-multihop <%= neighbour['desc'] %>
+      <%- end -%>
+!
+ address-family ipv6
+  neighbor <%= addr %> activate
+  neighbor <%= addr %> soft-reconfiguration inbound
+  neighbor <%= addr %> prefix-list prefix-v6 out
+      <%- if @networks6 then -%>
+        <%- @networks6.each do |network| %>
+ network <%= networ %>
+        <%- end %>
+      <%- end %>
+ exit-address-family
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
+!
+!
+<% if ! bgp['enable_advertisements'] then -%>
+ip prefix-list prefix-v4 seq 1 deny any
+ipv6 prefix-list prefix-v6 seq 1 deny any
+<%- end -%>
+!
+<%- if @networks4 then -%>
+  <%- @networks4.each_with_index do |network, index| %>
+    ip prefix-list prefix-v4 seq <%= index + 1 %> permit <%= network %>
+  <%- end %>
+<%- end %>
+!
+<%- if @networks6 then -%>
+  <%- @networks6.each_with_index do |network, index| %>
+    ip prefix-list prefix-v6 seq <%= index + 1 %> permit <%= network %>
+  <%- end %>
+<%- end %>
+!
+<% bgp['peers'].each_pair do |as, config| -%>
+  <%- if config['localpref'] -%>
+route-map LOCALPREF-<%= as %> permit 10
+  set local-preference <%= config['localpref'] %>
+!
+  <%- end -%>
+<%- end -%>
+line vty
+!
+!

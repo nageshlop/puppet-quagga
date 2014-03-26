@@ -20,8 +20,6 @@ class quagga (
   $content = $::quagga::params::quagga_content,
 ) {
 
-  include quagga::params
-
   package { $::quagga::params::package:
     ensure => installed,
   }
