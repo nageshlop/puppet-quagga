@@ -41,16 +41,15 @@
 #  }
 #
 class quagga::service::bgpd (
-  $content               = $::quagga::params::bgpd_content,
   $router_id             = undef,
   $networks4             = undef,
   $networks6             = undef,
   $multihop              = undef,
   $enable_advertisements = undef,
   $peers                 = undef,
+  $content               = $::quagga::params::bgpd_content,
 ) inherits quagga::params {
 
-  notify { $content: }
   class { 'quagga::service':
     service  => 'bgpd',
     content  => $content
