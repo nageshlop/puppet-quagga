@@ -21,15 +21,10 @@ class quagga::service (
   include quagga::params
   class { '::quagga': }
 
-  service { $service:
-    ensure  => running,
-    require => [ Service['zebra'], File["/etc/quagga/${service}.conf"] ],
-    enable  => true,
-  }
   file { "/etc/quagga/${service}.conf":
     content => $content,
     require => Package['quagga'],
-    notify  => Service[$service],
+    notify  => Service['quagga'],
   }
 
 }
