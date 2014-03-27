@@ -32,7 +32,7 @@ class quagga (
     mode    => $mode,
     content => $content,
     require => Package[ $::quagga::params::package ],
-    notify  => Service['zebra'],
+    notify  => Service['quagga'],
   }
 
   service { 'quagga':
