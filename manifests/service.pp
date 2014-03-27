@@ -19,7 +19,7 @@ class quagga::service (
 ) {
 
   include quagga::params
-  class { 'quagga::': }
+  class { '::quagga': }
 
   service { $service:
     ensure  => running,
