@@ -59,6 +59,7 @@ class quagga (
       'zebra':
         setting => 'zebra',
         value   => 'off',
+    }
   }
   if defined(Class['::quagga::service::bgpd']) {
     ini_setting {
@@ -72,6 +73,7 @@ class quagga (
         setting => 'bgpd',
         value   => 'off',
     }
+  }
   if defined(Class['::quagga::service::ospfd']) {
     ini_setting {
       'ospfd':
@@ -84,5 +86,6 @@ class quagga (
         setting => 'ospfd',
         value   => 'off',
     }
+  }
 }
 
