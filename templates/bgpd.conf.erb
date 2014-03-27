@@ -69,7 +69,7 @@ ip prefix-list prefix-v4 seq <%= index + 1 %> permit <%= network %>
 !
 <%- if @networks6 then -%>
   <%- @networks6.each_with_index do |network, index| -%>
-ip prefix-list prefix-v6 seq <%= index + 1 %> permit <%= network %>
+ipv6 prefix-list prefix-v6 seq <%= index + 1 %> permit <%= network %>
   <%- end %>
 <%- end %>
 !
