@@ -45,13 +45,19 @@ class quagga (
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
+  file {'/usr/local/bin/quagga_status.sh':
+    ensure  => present,
+    mode    => '0555',
+    content => template('quagga/quagga_status.sh.erb'),
+  }
 
   service { 'quagga':
     ensure    => running,
     enable    => true,
     hasstatus => false,
-    require => [Package[ $::quagga::params::package ],
-      File['/etc/quagga/zebra.conf'] ]
+    status    => '/usr/local/bin/quagga_status.sh',
+    require   => [Package[ $::quagga::params::package ],
+      File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh'] ]
   }
   Ini_setting {
     ensure  => present,

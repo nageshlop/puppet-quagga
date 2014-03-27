@@ -1,7 +1,6 @@
 # Class: quagga::params
 #
 class quagga::params {
-
   $owner          = 'quagga'
   $group          = 'quagga'
   $mode           = '0664'
@@ -9,18 +8,6 @@ class quagga::params {
   $ospfd_content  = template('quagga/ospfd.conf.erb')
   $bgpd_content   = template('quagga/bgpd.conf.erb')
   $enable_zebra   = true
-
-  case $::operatingsystem {
-    'RedHat', 'Fedora', 'CentOS': {
-      $package = 'quagga'
-    }
-    'Gentoo': {
-      $package = 'net-misc/quagga'
-    }
-    default: {
-      $package = 'quagga'
-    }
-  }
-
+  $package = 'quagga'
 }
 
