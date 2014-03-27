@@ -49,7 +49,7 @@ class quagga::service::bgpd (
   $enable_advertisements = undef,
   $peers                 = undef,
 ) {
-
+  notice { $content: }
   class { 'quagga::service':
     service  => 'bgpd',
     content  => $content
