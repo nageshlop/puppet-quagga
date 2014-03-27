@@ -1,14 +1,14 @@
 !
 hostname <%= @fqdn %>
 !
-router bgp <%= $asn %>
+router bgp <%= @my_asn %>
 !
- bgp router-id <%= $router_id %>
+ bgp router-id <%= @router_id %>
  <%- if @networks4 then -%>
-  <%- @networks4.each do |network| %>
+  <%- @networks4.each do |network| -%>
  network <%= network %>
-  <%- end %>
-<%- end %>
+  <%- end -%>
+<%- end -%>
 !
 <% @peers.each_pair do |as, neighbour| -%>
   <%- if neighbour['addr4'] then -%>
@@ -46,8 +46,8 @@ router bgp <%= $asn %>
   neighbor <%= addr %> soft-reconfiguration inbound
   neighbor <%= addr %> prefix-list prefix-v6 out
       <%- if @networks6 then -%>
-        <%- @networks6.each do |network| %>
- network <%= network %>
+        <%- @networks6.each do |network| -%>
+  network <%= network %>
         <%- end %>
       <%- end %>
  exit-address-family
@@ -62,14 +62,14 @@ ipv6 prefix-list prefix-v6 seq 1 deny any
 <%- end -%>
 !
 <%- if @networks4 then -%>
-  <%- @networks4.each_with_index do |network, index| %>
-    ip prefix-list prefix-v4 seq <%= index + 1 %> permit <%= network %>
+  <%- @networks4.each_with_index do |network, index| -%>
+ip prefix-list prefix-v4 seq <%= index + 1 %> permit <%= network %>
   <%- end %>
 <%- end %>
 !
 <%- if @networks6 then -%>
-  <%- @networks6.each_with_index do |network, index| %>
-    ip prefix-list prefix-v6 seq <%= index + 1 %> permit <%= network %>
+  <%- @networks6.each_with_index do |network, index| -%>
+ip prefix-list prefix-v6 seq <%= index + 1 %> permit <%= network %>
   <%- end %>
 <%- end %>
 !

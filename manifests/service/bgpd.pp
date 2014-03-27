@@ -28,7 +28,7 @@
 #
 # Sample Usage :
 #  class { 'quagga::service::bgpd':
-#    content               => template('mymodule/quagga/bgpd.conf.erb'),
+#    myasn                 => 65535,
 #    router_id             => '192.0.2.1',
 #    networks4             => ['192.0.2.0/24'],
 #    networks6             => ['2001:DB8::/32'],
@@ -38,9 +38,11 @@
 #                                   addr6 => ['2001:DB8::1'],
 #                                   multihop => 5,
 #                                   localpref => 120 } }
+#    content               => template('mymodule/quagga/bgpd.conf.erb'),
 #  }
 #
 class quagga::service::bgpd (
+  $my_asn                = undef,
   $router_id             = undef,
   $networks4             = undef,
   $networks6             = undef,
