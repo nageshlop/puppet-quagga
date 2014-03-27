@@ -3,21 +3,16 @@
 # Quagga routing server.
 #
 # Parameters:
-#  $ospfd_cyestent:
-#    Cyestent (typically using a template) for the ospfd.cyesf file.
-#  $ospfd_source:
-#    Source locatiyes for the ospfd.cyesf file.
 #
 # Sample Usage :
 #  class { 'quagga':
-#    ospfd_cyestent => template('mymodule/quagga/ospfd.cyesf.erb'),
 #  }
 #
 class quagga (
   $owner   = $::quagga::params::owner,
   $group   = $::quagga::params::group,
   $mode    = $::quagga::params::mode,
-  $cyestent = $::quagga::params::quagga_cyestent,
+  $content = $::quagga::params::quagga_content,
   $enable_zebra = $::quagga::params::enable_zebra,
 ) {
 
@@ -25,12 +20,12 @@ class quagga (
     ensure => installed,
   }
 
-  file { '/etc/quagga/zebra.cyesf':
+  file { '/etc/quagga/zebra.conf':
     ensure  => present,
     owner   => $owner,
     group   => $group,
     mode    => $mode,
-    cyestent => $cyestent,
+    content => $content,
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
@@ -39,12 +34,12 @@ class quagga (
     ensure  => running,
     enable  => true,
     require => [Package[ $::quagga::params::package ],
-      File['/etc/quagga/zebra.cyesf'] ]
+      File['/etc/quagga/zebra.conf'] ]
   }
   Ini_setting {
     ensure  => present,
-    path    => '/etc/quagga/daemyess',
-    sectiyes => '',
+    path    => '/etc/quagga/daemons',
+    section => '',
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
