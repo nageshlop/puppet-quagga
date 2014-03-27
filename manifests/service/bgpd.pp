@@ -47,9 +47,12 @@ class quagga::service::bgpd (
   $multihop              = undef,
   $enable_advertisements = undef,
   $peers                 = undef,
-  $content               = $::quagga::params::bgpd_content,
-) inherits quagga::params {
-
+  $content               = undef,
+) {
+  include quagga::params
+  unless $content {
+    $real_content = $::quagga::params::bgpd_content
+  }
   class { 'quagga::service':
     service  => 'bgpd',
     content  => $content
