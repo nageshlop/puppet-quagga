@@ -51,15 +51,17 @@ class quagga::service::bgpd (
   $peers                 = undef,
   $content               = undef,
 ) {
+
   include quagga::params
 
-  unless $content {
-    $real_content = $::quagga::params::bgpd_content
+  $content_real = $content ? {
+    undef   => $::quagga::params::bgpd_content,
+    default => $content,
   }
 
   class { 'quagga::service':
     service  => 'bgpd',
-    content  => $real_content
+    content  => $content_real
   }
 }
 

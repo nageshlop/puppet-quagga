@@ -16,12 +16,15 @@ class quagga::service::ospfd (
 ) {
 
   include $::quagga::params
-  unless $content {
-    $content = $::quagga::params::ospfd_content
+
+  $content_real = $content ? {
+    undef   => $::quagga::params::ospfd_content,
+    default => $content,
   }
+
   class { 'quagga::service':
     service  => 'ospfd',
-    content  => $content
+    content  => $content_real,
   }
 }
 

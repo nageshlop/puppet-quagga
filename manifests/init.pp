@@ -17,20 +17,25 @@ class quagga (
 ) {
 
   include $::quagga::params
-  unless $owner {
-    $owner   = $::quagga::params::owner
+  $owner_real = $owner ? {
+    undef   => $::quagga::params::owner,
+    default => $owner,
   }
-  unless $group {
-    $group   = $::quagga::params::group
+  $group_real = $group ? {
+    undef   => $::quagga::params::group,
+    default => $group,
   }
-  unless $mode {
-    $mode    = $::quagga::params::mode
+  $mode_real = $mode ? {
+    undef   => $::quagga::params::mode,
+    default => $mode,
   }
-  unless $content {
-    $content = $::quagga::params::quagga_content
+  $content_real = $content ? {
+    undef   => $::quagga::params::content,
+    default => $content,
   }
-  unless $enable_zebra {
-    $enable_zebra = $::quagga::params::enable_zebra
+  $enable_zebra_real = $enable_zebra ? {
+    undef   => $::quagga::params::enable_zebra,
+    default => $enable_zebra,
   }
 
   package { $::quagga::params::package:
@@ -38,10 +43,10 @@ class quagga (
   }
   file { '/etc/quagga/zebra.conf':
     ensure  => present,
-    owner   => $owner,
-    group   => $group,
-    mode    => $mode,
-    content => $content,
+    owner   => $real_owner,
+    group   => $real_group,
+    mode    => $real_mode,
+    content => $real_content,
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
@@ -66,7 +71,7 @@ class quagga (
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
-  if $enable_zebra {
+  if $real_enable_zebra {
     ini_setting {
       'zebra':
         setting => 'zebra',
