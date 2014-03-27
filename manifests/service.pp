@@ -23,7 +23,7 @@ class quagga::service (
 
   file { "/etc/quagga/${service}.conf":
     content => $content,
-    require => Package['quagga'],
+    require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
 
