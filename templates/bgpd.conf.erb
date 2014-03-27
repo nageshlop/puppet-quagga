@@ -73,7 +73,7 @@ ipv6 prefix-list prefix-v6 seq 1 deny any
   <%- end %>
 <%- end %>
 !
-<% bgp['peers'].each_pair do |as, config| -%>
+<% @peers.each_pair do |as, config| -%>
   <%- if config['localpref'] -%>
 route-map LOCALPREF-<%= as %> permit 10
   set local-preference <%= config['localpref'] %>
