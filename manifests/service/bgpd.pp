@@ -50,9 +50,12 @@ class quagga::service::bgpd (
   $content               = undef,
 ) {
   include quagga::params
+
   unless $content {
+    notify { 'test': }
     $real_content = $::quagga::params::bgpd_content
   }
+
   class { 'quagga::service':
     service  => 'bgpd',
     content  => $content
