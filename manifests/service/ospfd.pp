@@ -12,9 +12,13 @@
 #  }
 #
 class quagga::service::ospfd (
-  $content = $::quagga::params::ospfd_content,
+  $content = undef,
 ) {
 
+  include $::quagga::params
+  unless $content {
+    $content = $::quagga::params::ospfd_content
+  }
   class { 'quagga::service':
     service  => 'ospfd',
     content  => $content

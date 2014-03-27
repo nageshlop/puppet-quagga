@@ -9,12 +9,29 @@
 #  }
 #
 class quagga (
-  $owner   = $::quagga::params::owner,
-  $group   = $::quagga::params::group,
-  $mode    = $::quagga::params::mode,
-  $content = $::quagga::params::quagga_content,
-  $enable_zebra = $::quagga::params::enable_zebra,
+  $owner   = undef,
+  $group   = undef,
+  $mode    = undef,
+  $content = undef,
+  $enable_zebra = undef,
 ) {
+
+  include $::quagga::params
+  unless $owner {
+    $owner   = $::quagga::params::owner
+  }
+  unless $group {
+    $group   = $::quagga::params::group
+  }
+  unless $mode {
+    $mode    = $::quagga::params::mode
+  }
+  unless $content {
+    $content = $::quagga::params::quagga_content
+  }
+  unless $enable_zebra {
+    $enable_zebra = $::quagga::params::enable_zebra
+  }
 
   package { $::quagga::params::package:
     ensure => installed,
