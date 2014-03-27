@@ -30,8 +30,9 @@ class quagga (
   }
 
   service { 'quagga':
-    ensure  => running,
-    enable  => true,
+    ensure    => running,
+    enable    => true,
+    hasstatus => false,
     require => [Package[ $::quagga::params::package ],
       File['/etc/quagga/zebra.conf'] ]
   }
