@@ -49,6 +49,8 @@ class quagga::service::bgpd (
   $enable_advertisements = undef,
   $peers                 = undef,
 ) {
+  include quagga::params
+
   notify { $content: }
   class { 'quagga::service':
     service  => 'bgpd',

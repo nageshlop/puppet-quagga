@@ -19,7 +19,6 @@ class quagga (
   package { $::quagga::params::package:
     ensure => installed,
   }
-  notify {$::quagga::params::bgpd_content: }
   file { '/etc/quagga/zebra.conf':
     ensure  => present,
     owner   => $owner,
