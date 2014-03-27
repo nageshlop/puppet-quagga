@@ -71,7 +71,7 @@ class quagga (
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }
-  if $real_enable_zebra {
+  if $enable_zebra_real {
     ini_setting {
       'zebra':
         setting => 'zebra',
