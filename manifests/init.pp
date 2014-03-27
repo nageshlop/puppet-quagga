@@ -55,6 +55,10 @@ class quagga (
     mode    => '0555',
     content => template('quagga/quagga_status.sh.erb'),
   }
+  file {'/etc/profile.d/vtysh.sh':
+    ensure => present,
+    source => "puppet:///modules/quagga/vtysh.sh"
+  }
 
   service { 'quagga':
     ensure    => running,
