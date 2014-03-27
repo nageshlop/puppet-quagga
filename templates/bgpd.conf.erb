@@ -23,7 +23,7 @@ router bgp <%= @my_asn %>
  neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
       <%- end -%>
       <%- if neighbour['multihop'] then -%>
- neighbor <%= addr %> ebgp-multihop <%= neighbour['desc'] %>
+ neighbor <%= addr %> ebgp-multihop <%= neighbour['multihop'] %>
       <%- end -%>
     <%- end -%>
   <%- end -%>
@@ -38,7 +38,7 @@ router bgp <%= @my_asn %>
  neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
       <%- end -%>
       <%- if neighbour['multihop'] then -%>
- neighbor <%= addr %> ebgp-multihop <%= neighbour['desc'] %>
+ neighbor <%= addr %> ebgp-multihop <%= neighbour['multihop'] %>
       <%- end -%>
 !
  address-family ipv6
