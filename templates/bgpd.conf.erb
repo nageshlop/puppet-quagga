@@ -6,7 +6,7 @@ router bgp <%= $asn %>
  bgp router-id <%= $router_id %>
  <%- if @networks4 then -%>
   <%- @networks4.each do |network| %>
- network <%= networ %>
+ network <%= network %>
   <%- end %>
 <%- end %>
 !
@@ -47,7 +47,7 @@ router bgp <%= $asn %>
   neighbor <%= addr %> prefix-list prefix-v6 out
       <%- if @networks6 then -%>
         <%- @networks6.each do |network| %>
- network <%= networ %>
+ network <%= network %>
         <%- end %>
       <%- end %>
  exit-address-family

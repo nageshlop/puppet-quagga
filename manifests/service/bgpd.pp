@@ -1,6 +1,6 @@
 # Class: quagga::service::bgpd
 #
-# Quagga routing server.
+# BGPd for the Quagga routing server.
 #
 # Parameters:
 #  $content:
