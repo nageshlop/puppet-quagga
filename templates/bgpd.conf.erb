@@ -63,13 +63,13 @@ ipv6 prefix-list prefix-v6 seq 1 deny any
 !
 <%- if @networks4 then -%>
   <%- @networks4.each_with_index do |network, index| -%>
-ip prefix-list prefix-v4 seq <%= index + 1 %> permit <%= network %>
+ip prefix-list prefix-v4 seq <%= index + 2 %> permit <%= network %>
   <%- end %>
 <%- end %>
 !
 <%- if @networks6 then -%>
   <%- @networks6.each_with_index do |network, index| -%>
-ipv6 prefix-list prefix-v6 seq <%= index + 1 %> permit <%= network %>
+ipv6 prefix-list prefix-v6 seq <%= index + 2 %> permit <%= network %>
   <%- end %>
 <%- end %>
 !
