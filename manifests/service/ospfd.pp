@@ -24,7 +24,7 @@ class quagga::service::ospfd (
 
   class { 'quagga::service':
     service  => 'ospfd',
-    content  => $content_real,
+    content  => template($content_real),
   }
 }
 
