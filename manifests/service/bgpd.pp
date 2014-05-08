@@ -61,7 +61,7 @@ class quagga::service::bgpd (
 
   class { 'quagga::service':
     service  => 'bgpd',
-    content  => $content_real
+    content  => template($content_real)
   }
 }
 
