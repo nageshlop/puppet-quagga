@@ -13,7 +13,7 @@ router bgp <%= @my_asn %>
 <% @peers.each_pair do |as, neighbour| -%>
   <%- if neighbour['addr4'] then -%>
     <%- neighbour['addr4'].each do |addr| -%>
-      <%- if addr -%>
+      <%- if addr then -%>
  neighbor <%= addr %> remote-as <%= as %>
  neighbor <%= addr %> soft-reconfiguration inbound
  neighbor <%= addr %> prefix-list prefix-v4 out
@@ -31,7 +31,7 @@ router bgp <%= @my_asn %>
   <%- end -%>
   <%- if neighbour['addr6'] then -%>
     <%- neighbour['addr6'].each do |addr| -%>
-      <%- if addr -%>
+      <%- if addr then -%>
  neighbor <%= addr %> remote-as <%= as %>
  no neighbor <%= addr %> activate
         <%- if neighbour['desc'] then -%>
