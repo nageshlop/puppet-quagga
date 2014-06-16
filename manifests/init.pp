@@ -43,10 +43,10 @@ class quagga (
   }
   file { '/etc/quagga/zebra.conf':
     ensure  => present,
-    owner   => $real_owner,
-    group   => $real_group,
-    mode    => $real_mode,
-    content => $real_content,
+    owner   => $owner_real,
+    group   => $group_real,
+    mode    => $mode_real,
+    content => $content_real,
     require => Package[ $::quagga::params::package ],
     notify  => Service['quagga'],
   }

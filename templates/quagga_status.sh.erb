@@ -2,6 +2,6 @@
 PATH=/usr/bin
 awk -F= '$2=="yes" {print $1}' /etc/quagga/daemons | while read DAEMON
 do
-  pgrep -u <%= @real_owner %> ${DAEMON} || exit 3
+  pgrep -u <%= @owner_real %> ${DAEMON} || exit 3
 done
 exit 0
