@@ -38,7 +38,7 @@ router bgp <%= @my_asn %>
  neighbor <%= addr %> remote-as <%= as %>
  no neighbor <%= addr %> activate
         <%- if config['desc'] then -%>
- neighbor <%= addr %> description <%= neighbour['desc'] %>
+ neighbor <%= addr %> description <%= config['desc'] %>
         <%- end -%>
         <%- if config['localpref'] then -%>
  neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
@@ -47,7 +47,7 @@ router bgp <%= @my_asn %>
  neighbor <%= addr %> route-map COMMUNITY-<%= as %> out
         <%- end -%>
         <%- if config['multihop'] then -%>
- neighbor <%= addr %> ebgp-multihop <%= neighbour['multihop'] %>
+ neighbor <%= addr %> ebgp-multihop <%= config['multihop'] %>
         <%- end -%>
 !
  address-family ipv6
