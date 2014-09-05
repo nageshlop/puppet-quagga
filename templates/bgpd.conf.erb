@@ -23,6 +23,9 @@ router bgp <%= @my_asn %>
         <%- if neighbour['localpref'] then -%>
  neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
         <%- end -%>
+        <%- if neighbour['community'] then -%>
+ neighbor <%= addr %> route-map COMMUNITY-<%= as %> out
+        <%- end -%>
         <%- if neighbour['multihop'] then -%>
  neighbor <%= addr %> ebgp-multihop <%= neighbour['multihop'] %>
         <%- end -%>
@@ -39,6 +42,9 @@ router bgp <%= @my_asn %>
         <%- end -%>
         <%- if neighbour['localpref'] then -%>
  neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
+        <%- end -%>
+        <%- if neighbour['community'] then -%>
+ neighbor <%= addr %> route-map COMMUNITY-<%= as %> out
         <%- end -%>
         <%- if neighbour['multihop'] then -%>
  neighbor <%= addr %> ebgp-multihop <%= neighbour['multihop'] %>
@@ -81,8 +87,12 @@ ipv6 prefix-list prefix-v6 seq <%= index + 2 %> permit <%= network %>
   <%- if config['localpref'] -%>
 route-map LOCALPREF-<%= as %> permit 10
   set local-preference <%= config['localpref'] %>
-!
   <%- end -%>
+  <%- if config['community'] -%>
+route-map COMMUNITY-<%= as %> permit 10
+  set community <%= config['community'] %>
+  <%- end -%>
+!
 <%- end -%>
 line vty
 !
