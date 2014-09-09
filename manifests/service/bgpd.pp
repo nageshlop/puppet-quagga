@@ -42,14 +42,18 @@
 #  }
 #
 class quagga::service::bgpd (
-  $my_asn                = undef,
-  $router_id             = undef,
-  $networks4             = undef,
-  $networks6             = undef,
-  $multihop              = undef,
-  $enable_advertisements = undef,
-  $peers                 = undef,
-  $content               = undef,
+  $my_asn                   = undef,
+  $router_id                = undef,
+  $networks4                = [],
+  $networks6                = [],
+  $multihop                 = undef,
+  $localpref                = undef,
+  $community                = undef,
+  $enable_advertisements    = true,
+  $enable_advertisements_v4 = true,
+  $enable_advertisements_v6 = true,
+  $peers                    = undef,
+  $content                  = undef,
 ) {
 
   include quagga::params
