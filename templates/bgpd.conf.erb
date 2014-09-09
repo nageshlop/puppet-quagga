@@ -65,8 +65,10 @@ router bgp <%= @my_asn %>
   <%- end -%>
 <%- end -%>
 !
-<% if ! @enable_advertisements then -%>
+<% if ! @enable_advertisements or ! @enable_advertisements_v4 then -%>
 ip prefix-list prefix-v4 seq 1 deny any
+<%- end -%>
+<% if ! @enable_advertisements or ! @enable_advertisements_v6 then -%>
 ipv6 prefix-list prefix-v6 seq 1 deny any
 <%- end -%>
 !
