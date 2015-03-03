@@ -48,6 +48,7 @@ class quagga::service::bgpd (
   $failsafe_networks4       = [],
   $networks6                = [],
   $failsafe_networks6       = [],
+  $failover_server          = false,
   $multihop                 = undef,
   $localpref                = undef,
   $community                = undef,
