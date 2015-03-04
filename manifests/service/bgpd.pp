@@ -52,6 +52,7 @@ class quagga::service::bgpd (
   $multihop                 = undef,
   $localpref                = undef,
   $community                = undef,
+  $default_only             = true,
   $enable_advertisements    = true,
   $enable_advertisements_v4 = true,
   $enable_advertisements_v6 = true,
