@@ -57,11 +57,14 @@ class quagga::service::bgpd (
   $enable_advertisements    = true,
   $enable_advertisements_v4 = true,
   $enable_advertisements_v6 = true,
+  $manage_nagios            = false,
   $peers                    = undef,
   $content                  = undef,
 ) {
 
   include quagga::params
+
+  validate_bool($manage_nagios)
 
   $content_real = $content ? {
     undef   => $::quagga::params::bgpd_content,
