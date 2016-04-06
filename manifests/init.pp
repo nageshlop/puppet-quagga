@@ -9,45 +9,22 @@
 #  }
 #
 class quagga (
-  $owner   = undef,
-  $group   = undef,
-  $mode    = undef,
-  $content = undef,
-  $enable_zebra = undef,
-) {
+  $owner        = $::quagga::params::owner,
+  $group        = $::quagga::params::group,
+  $mode         = $::quagga::params::mode,
+  $content      = $::quagga::params::content,
+  $package      = $::quagga::params::package,
+  $enable_zebra = $::quagga::params::enable_zebra,
+) inherits quagga::params {
 
-  include $::quagga::params
-  $owner_real = $owner ? {
-    undef   => $::quagga::params::owner,
-    default => $owner,
-  }
-  $group_real = $group ? {
-    undef   => $::quagga::params::group,
-    default => $group,
-  }
-  $mode_real = $mode ? {
-    undef   => $::quagga::params::mode,
-    default => $mode,
-  }
-  $content_real = $content ? {
-    undef   => $::quagga::params::content,
-    default => $content,
-  }
-  $enable_zebra_real = $enable_zebra ? {
-    undef   => $::quagga::params::enable_zebra,
-    default => $enable_zebra,
-  }
-
-  package { $::quagga::params::package:
-    ensure => installed,
-  }
+  ensure_package($package)
   file { '/etc/quagga/zebra.conf':
     ensure  => present,
-    owner   => $owner_real,
-    group   => $group_real,
-    mode    => $mode_real,
-    content => $content_real,
-    require => Package[ $::quagga::params::package ],
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
+    content => $content,
+    require => Package[ $package ],
     notify  => Service['quagga'],
   }
   file {'/usr/local/bin/quagga_status.sh':
@@ -66,17 +43,17 @@ class quagga (
     hasstatus => false,
     status    => '/usr/local/bin/quagga_status.sh',
     start     => '/etc/init.d/quagga restart',
-    require   => [Package[ $::quagga::params::package ],
+    require   => [Package[ $package ],
       File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh'] ]
   }
   Ini_setting {
     ensure  => present,
     path    => '/etc/quagga/daemons',
     section => '',
-    require => Package[ $::quagga::params::package ],
+    require => Package[ $package ],
     notify  => Service['quagga'],
   }
-  if $enable_zebra_real {
+  if $enable_zebra {
     ini_setting {
       'zebra':
         setting => 'zebra',
