@@ -37,4 +37,18 @@ define quagga::service::bgpd::peer (
     content => template('quagga/bgpd.conf.routemap.erb'),
     order   => 90,
   }
+  if $::quagga::service::bgpd::manage_nagios {
+    if $::quagga::service::bgpd::enable_advertisements {
+      if $::quagga::service::bgpd::enable_advertisements_v4 {
+        quagga::service::bgpd::peer::nagios {$addr4:
+          routes => concat($::quagga::service::bgpd::networks4, $::quagga::service::bgpd::failsafe_networks4),
+        }
+      }
+      if $::quagga::service::bgpd::enable_advertisements_v6 {
+        quagga::service::bgpd::peer::nagios {$addr6:
+          routes => concat($::quagga::service::bgpd::networks6, $::quagga::service::bgpd::failsafe_networks6),
+        }
+      }
+    }
+  }
 }
