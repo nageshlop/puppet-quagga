@@ -42,7 +42,7 @@ class quagga::service::bgpd (
   concat::fragment{ 'quagga_bgpd_acl':
     target  => $conf_file,
     content => template('quagga/bgpd.conf.acl.erb'),
-    order   => 90,
+    order   => 80,
   }
   concat::fragment{ 'quagga_bgpd_foot':
     target  => $conf_file,

@@ -20,6 +20,7 @@ define quagga::service::bgpd::peer (
   if $multihop { validate_integer($multihop) }
   if $password { validate_string($password) }
   if $prepend { validate_integer($prepend) }
+  $my_asn = $::quagga::service::bgpd::my_asn
   
   concat::fragment{"bgpd_peer_${name}":
     target  => $::quagga::service::bgpd::conf_file,
@@ -30,5 +31,10 @@ define quagga::service::bgpd::peer (
     target  => $::quagga::service::bgpd::conf_file,
     content => template('quagga/bgpd.conf.v6peer.erb'),
     order   => 40,
+  }
+  concat::fragment{ 'quagga_bgpd_routemap':
+    target  => $conf_file,
+    content => template('quagga/bgpd.conf.routemap.erb'),
+    order   => 90,
   }
 }
