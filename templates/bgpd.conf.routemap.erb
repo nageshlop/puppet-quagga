@@ -6,45 +6,44 @@ if @prepend
   @prepend = " #{@my_asn}" * @prepend.to_i 
 end
 -%>
-  <%- if @localpref -%>
+<%- if @localpref -%>
 route-map inbound-<%= @name %> permit 10
   set local-preference <%= @localpref %>
 !
-  <%- end -%>
-  <%- if @no_export -%>
+<%- end -%>
+<%- if @no_export -%>
 route-map outbound-<%= @name %> permit 10
   match ip address prefix-list specific-v4
   set community <%= @community.join(' ') %> <%- if @no_export -%> no-export<%- end %>
-    <%- if @prepend -%>
-  set as-path prepend<%= @prepend %>
-    <%- end -%>
-  <%- end -%>
-  <%- if @prepend or @community then -%>
-route-map outbound-<%= @name %> permit 20
-  <%- end -%>
   <%- if @prepend -%>
   set as-path prepend<%= @prepend %>
   <%- end -%>
-  <%- if @community -%>
+<%- end -%>
+<%- if @prepend or @community then -%>
+route-map outbound-<%= @name %> permit 20
+<%- end -%>
+<%- if @prepend -%>
+  set as-path prepend<%= @prepend %>
+<%- end -%>
+<%- if @community -%>
   set community <%= @community.join(' ') %>
-  <%- end -%>
+<%- end -%>
 !
-  <%- if @no_export -%>
+<%- if @no_export -%>
 route-map outbound-<%= @name %>-v6 permit 10
   match ip address prefix-list specific-v6
   set community <%= @community.join(' ') %> <%- if @no_export -%> no-export<%- end %>
-    <%- if @prepend -%>
-  set as-path prepend<%= @prepend %>
-    <%- end -%>
-  <%- end -%>
-  <%- if @prepend or @community then -%>
-route-map outbound-<%= @name %>-v6 permit 20
-  <%- end -%>
   <%- if @prepend -%>
   set as-path prepend<%= @prepend %>
   <%- end -%>
-  <%- if @community -%>
-  set community <%= @community.join(' ') %>
-  <%- end -%>
-!
 <%- end -%>
+<%- if @prepend or @community then -%>
+route-map outbound-<%= @name %>-v6 permit 20
+<%- end -%>
+<%- if @prepend -%>
+  set as-path prepend<%= @prepend %>
+<%- end -%>
+<%- if @community -%>
+  set community <%= @community.join(' ') %>
+<%- end -%>
+!
