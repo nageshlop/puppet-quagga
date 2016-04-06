@@ -1,11 +1,6 @@
 <%- if @community then
   @no_export = @community.delete('no-export')
-end
-@prepend = false
-if @prepend
-  @prepend = " #{@my_asn}" * @prepend.to_i 
-end
--%>
+end -%>
 <%- if @localpref -%>
 route-map inbound-<%= @name %> permit 10
   set local-preference <%= @localpref %>
@@ -16,7 +11,7 @@ route-map outbound-<%= @name %> permit 10
   match ip address prefix-list specific-v4
   set community <%= @community.join(' ') %> <%- if @no_export -%> no-export<%- end %>
   <%- if @prepend -%>
-  set as-path prepend<%= @prepend %>
+  set as-path prepend<%= " #{@my_asn}" * @prepend.to_i %>
   <%- end -%>
 <%- end -%>
 <%- if @prepend or @community then -%>

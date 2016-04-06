@@ -54,3 +54,4 @@ ipv6 prefix-list prefix-v6 seq <%= @prefix_v6_index %> permit <%= network %>
 <%- @networks6.each_with_index do |network, index| -%>
 ipv6 prefix-list specific-v6 seq <%= index + 1 %> permit <%= network %>
 <%- end -%>
+!
