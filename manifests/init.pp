@@ -2,9 +2,9 @@
 #
 # Quagga routing server.
 class quagga (
-  $owner        = 'quagga'
-  $group        = 'quagga'
-  $mode         = '0664'
+  $owner        = 'quagga',
+  $group        = 'quagga',
+  $mode         = '0664',
   $package      = 'quagga',
   $enable_zebra = true,
   $content      = $::quagga::params::content,
