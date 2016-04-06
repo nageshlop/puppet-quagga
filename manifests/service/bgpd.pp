@@ -31,7 +31,7 @@ class quagga::service::bgpd (
   }
   concat::fragment{ 'quagga_bgpd_v6head':
     target  => $conf_file,
-    content => "!\naddress-family ipv6\n",
+    content => "!\n address-family ipv6\n",
     order   => 30,
   }
   concat::fragment{ 'quagga_bgpd_v6foot':
