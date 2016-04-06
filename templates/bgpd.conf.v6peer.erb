@@ -12,10 +12,10 @@
   neighbor <%= addr %> prefix-list deny in
       <%- end -%>
       <%- if @localpref then -%>
-  neighbor <%= addr %> route-map inbound-<%= as %> in
+  neighbor <%= addr %> route-map inbound-<%= @name %> in
       <%- end -%>
       <%- if @community or @prepend then -%>
-  neighbor <%= addr %> route-map outbound-<%= as %>-v6 out
+  neighbor <%= addr %> route-map outbound-<%= @name %>-v6 out
       <%- end -%>
       <%- if @networks6 then -%>
         <%- @networks6.each do |network| -%>
