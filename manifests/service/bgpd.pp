@@ -46,7 +46,7 @@ class quagga::service::bgpd (
   }
   concat::fragment{ 'quagga_bgpd_foot':
     target  => $conf_file,
-    content => "!\nline vty\n",
+    content => "line vty\n!",
     order   => 99,
   }
   create_resources(quagga::service::bgpd::peer, $peers)
