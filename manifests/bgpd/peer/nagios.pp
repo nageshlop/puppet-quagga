@@ -1,6 +1,6 @@
-# quagga::service::bgpd::peer::nagios
+# quagga::bgpd::peer::nagios
 # 
-define quagga::service::bgpd::peer::nagios (
+define quagga::bgpd::peer::nagios (
   $routes = []
 ) {
   validate_array($routes)

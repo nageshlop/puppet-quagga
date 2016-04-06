@@ -1,13 +1,6 @@
 # Class: quagga
 #
 # Quagga routing server.
-#
-# Parameters:
-#
-# Sample Usage :
-#  class { 'quagga':
-#  }
-#
 class quagga (
   $owner        = $::quagga::params::owner,
   $group        = $::quagga::params::group,
@@ -16,6 +9,11 @@ class quagga (
   $package      = $::quagga::params::package,
   $enable_zebra = $::quagga::params::enable_zebra,
 ) inherits quagga::params {
+  validate_string($owner)
+  validate_string($group)
+  validate_string($content)
+  validate_string($package)
+  validate_bool($enable_zebra)
 
   ensure_packages([$package])
   file { '/etc/quagga/zebra.conf':
@@ -34,7 +32,7 @@ class quagga (
   }
   file {'/etc/profile.d/vtysh.sh':
     ensure => present,
-    source => "puppet:///modules/quagga/vtysh.sh"
+    source => 'puppet:///modules/quagga/vtysh.sh'
   }
 
   service { 'quagga':
@@ -66,7 +64,7 @@ class quagga (
         value   => 'no',
     }
   }
-  if defined(Class['::quagga::service::bgpd']) {
+  if defined(Class['::quagga::bgpd']) {
     ini_setting {
       'bgpd':
         setting => 'bgpd',
@@ -76,19 +74,6 @@ class quagga (
     ini_setting {
       'bgpd':
         setting => 'bgpd',
-        value   => 'no',
-    }
-  }
-  if defined(Class['::quagga::service::ospfd']) {
-    ini_setting {
-      'ospfd':
-        setting => 'ospfd',
-        value   => 'yes',
-    }
-  } else {
-    ini_setting {
-      'ospfd':
-        setting => 'ospfd',
         value   => 'no',
     }
   }

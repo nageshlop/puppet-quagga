@@ -1,6 +1,6 @@
-# Class: quagga::service::bgpd
+# Class: quagga::bgpd
 #
-class quagga::service::bgpd (
+class quagga::bgpd (
   $my_asn                   = undef,
   $router_id                = undef,
   $networks4                = [],
@@ -12,13 +12,25 @@ class quagga::service::bgpd (
   $enable_advertisements_v4 = true,
   $enable_advertisements_v6 = true,
   $manage_nagios            = false,
-  $peers                    = undef,
   $conf_file                = '/etc/quagga/bgpd.conf',
+  $peers                    = {},
 ) {
 
-  class { '::quagga': }
+  require quagga
 
+  validate_integer($my_asn)
+  validate_ip_address($router_id)
+  validate_array($networks4)
+  validate_array($failsafe_networks4)
+  validate_array($networks6)
+  validate_array($failsafe_networks6)
+  validate_bool($failover_server)
+  validate_bool($enable_advertisements)
+  validate_bool($enable_advertisements_v4)
+  validate_bool($enable_advertisements_v6)
   validate_bool($manage_nagios)
+  validate_absolute_path($conf_file)
+  validate_hash($peers)
 
   concat{$conf_file:
     require => Package[ $::quagga::package ],
@@ -49,6 +61,6 @@ class quagga::service::bgpd (
     content => "line vty\n!\n",
     order   => 99,
   }
-  create_resources(quagga::service::bgpd::peer, $peers)
+  create_resources(quagga::bgpd::peer, $peers)
 }
 
