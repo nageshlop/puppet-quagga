@@ -33,7 +33,7 @@ define quagga::service::bgpd::peer (
     order   => 40,
   }
   concat::fragment{ 'quagga_bgpd_routemap':
-    target  => $conf_file,
+    target  => $::quagga::service::bgpd::conf_file,
     content => template('quagga/bgpd.conf.routemap.erb'),
     order   => 90,
   }
