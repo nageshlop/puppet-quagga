@@ -17,16 +17,6 @@
       <%- if @community or @prepend then -%>
   neighbor <%= addr %> route-map outbound-<%= @name %>-v6 out
       <%- end -%>
-      <%- if @networks6 then -%>
-        <%- @networks6.each do |network| -%>
-  network <%= network %>
-        <%- end -%>
-      <%- end -%>
-      <%- if @failsafe_networks6 then -%>
-        <%- @failsafe_networks6.each do |network| -%>
-  network <%= network %>
-        <%- end -%>
-      <%- end -%>
     <%- end -%>
   <%- end -%>
 <%- end -%>
