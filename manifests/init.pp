@@ -17,7 +17,7 @@ class quagga (
   $enable_zebra = $::quagga::params::enable_zebra,
 ) inherits quagga::params {
 
-  ensure_package($package)
+  ensure_packages([$package])
   file { '/etc/quagga/zebra.conf':
     ensure  => present,
     owner   => $owner,
