@@ -24,7 +24,7 @@
       <%- if @localpref then -%>
  neighbor <%= addr %> route-map inbound-<%= @name %> in
       <%- end -%>
-      <%- if @community or @prepend then -%>
+      <%- if @communities.any? or @prepend then -%>
  neighbor <%= addr %> route-map outbound-<%= @name %> out
       <%- end -%>
     <%- end -%>
