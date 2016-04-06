@@ -1,0 +1,32 @@
+<%- if @addr6 then -%>
+  <%- @addr6.each do |addr| -%>
+    <%- if addr then -%>
+  neighbor <%= addr %> activate
+  neighbor <%= addr %> soft-reconfiguration inbound
+  neighbor <%= addr %> prefix-list prefix-v6 out
+      <%- if @inbound_routes.to_s == 'default' or @inbound_routes.to_s == 'v6default' then -%>
+  neighbor <%= addr %> prefix-list default-route in
+      <%- elsif @inbound_routes.to_s == 'all' then -%>
+  neighbor <%= addr %> prefix-list deny-default-route in
+      <%- else -%>
+  neighbor <%= addr %> prefix-list deny in
+      <%- end -%>
+      <%- if @localpref then -%>
+  neighbor <%= addr %> route-map inbound-<%= as %> in
+      <%- end -%>
+      <%- if @community or @prepend then -%>
+  neighbor <%= addr %> route-map outbound-<%= as %>-v6 out
+      <%- end -%>
+      <%- if @networks6 then -%>
+        <%- @networks6.each do |network| -%>
+  network <%= network %>
+        <%- end -%>
+      <%- end -%>
+      <%- if @failsafe_networks6 then -%>
+        <%- @failsafe_networks6.each do |network| -%>
+  network <%= network %>
+        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

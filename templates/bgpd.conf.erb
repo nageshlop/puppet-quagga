@@ -1,3 +1,9 @@
+<%- if @zone_status_errors.is_a?(String) then
+  #deal with stringify_facts = true 
+  @zone_status_errors = eval(@zone_status_errors)
+end -%> 
+!
+! This file is managed by Puppet. DO NOT EDIT.
 !
 hostname <%= @fqdn %>
 !
@@ -8,26 +14,44 @@ router bgp <%= @my_asn %>
   <%- @networks4.each do |network| -%>
  network <%= network %>
   <%- end -%>
-<%- end -%>
-!
+ <%- end -%>
+ <%- if @failsafe_networks4 then -%>
+  <%- @failsafe_networks4.each do |network| -%>
+ network <%= network %>
+  <%- end -%>
+ <%- end -%>
 <% @peers.each_pair do |as, config| -%>
   <%- if config['addr4'] then -%>
     <%- config['addr4'].each do |addr| -%>
       <%- if addr then -%>
  neighbor <%= addr %> remote-as <%= as %>
- neighbor <%= addr %> soft-reconfiguration inbound
- neighbor <%= addr %> prefix-list prefix-v4 out
         <%- if config['desc'] then -%>
  neighbor <%= addr %> description <%= config['desc'] %>
         <%- end -%>
-        <%- if config['localpref'] then -%>
- neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
-        <%- end -%>
-        <%- if config['community'] then -%>
- neighbor <%= addr %> route-map COMMUNITY-<%= as %> out
+        <%- if config['password'] then -%>
+ neighbor <%= addr %> password <%= config['password'] %>
         <%- end -%>
         <%- if config['multihop'] then -%>
  neighbor <%= addr %> ebgp-multihop <%= config['multihop'] %>
+        <%- end -%>
+        <%- if config['ttl-security'] and !config['multihop'] then -%>
+ neighbor <%= addr %> ttl-security hops <%= config['ttl-security'] %>
+        <%- end -%>
+ neighbor <%= addr %> soft-reconfiguration inbound
+ neighbor <%= addr %> prefix-list prefix-v4 out
+        <%- if config['inbound_routes'].to_s == 'default' or config['inbound_routes'].to_s == 'v4default' then -%>
+! Config hardcoded here to deny any default route learning over IPv4         
+ neighbor <%= addr %> prefix-list deny in  
+        <%- elsif config['inbound_routes'].to_s == 'all' then -%>
+ neighbor <%= addr %> prefix-list deny-default-route in
+        <%- else -%>
+ neighbor <%= addr %> prefix-list deny in
+        <%- end -%>
+        <%- if config['localpref'] then -%>
+ neighbor <%= addr %> route-map inbound-<%= as %> in
+        <%- end -%>
+        <%- if config['community'] or config['prepend'] then -%>
+ neighbor <%= addr %> route-map outbound-<%= as %> out
         <%- end -%>
       <%- end -%>
     <%- end -%>
@@ -40,59 +64,152 @@ router bgp <%= @my_asn %>
         <%- if config['desc'] then -%>
  neighbor <%= addr %> description <%= config['desc'] %>
         <%- end -%>
-        <%- if config['localpref'] then -%>
- neighbor <%= addr %> route-map LOCALPREF-<%= as %> in
-        <%- end -%>
-        <%- if config['community'] then -%>
- neighbor <%= addr %> route-map COMMUNITY-<%= as %> out
+        <%- if config['password'] then -%>
+ neighbor <%= addr %> password <%= config['password'] %>
         <%- end -%>
         <%- if config['multihop'] then -%>
  neighbor <%= addr %> ebgp-multihop <%= config['multihop'] %>
+        <%- end -%>
+        <%- if config['ttl-security'] and !config['multihop'] then -%>
+ neighbor <%= addr %> ttl-security hops <%= config['ttl-security'] %>
         <%- end -%>
 !
  address-family ipv6
   neighbor <%= addr %> activate
   neighbor <%= addr %> soft-reconfiguration inbound
   neighbor <%= addr %> prefix-list prefix-v6 out
+        <%- if config['inbound_routes'].to_s == 'default' or config['inbound_routes'].to_s == 'v6default' then -%>
+  neighbor <%= addr %> prefix-list default-route in
+        <%- elsif config['inbound_routes'].to_s == 'all' then -%>
+  neighbor <%= addr %> prefix-list deny-default-route in
+        <%- else -%>
+  neighbor <%= addr %> prefix-list deny in
+        <%- end -%>
+        <%- if config['localpref'] then -%>
+  neighbor <%= addr %> route-map inbound-<%= as %> in
+        <%- end -%>
+        <%- if config['community'] or config['prepend'] then -%>
+  neighbor <%= addr %> route-map outbound-<%= as %>-v6 out
+        <%- end -%>
         <%- if @networks6 then -%>
           <%- @networks6.each do |network| -%>
   network <%= network %>
-          <%- end %>
-        <%- end %>
+          <%- end -%>
+        <%- end -%>
+        <%- if @failsafe_networks6 then -%>
+          <%- @failsafe_networks6.each do |network| -%>
+  network <%= network %>
+          <%- end -%>
+        <%- end -%>
  exit-address-family
-      <%- end -%>
+      <%- end %>
     <%- end -%>
   <%- end -%>
 <%- end -%>
 !
+ip prefix-list default-route seq 1 permit 0.0.0.0/0
+!
+ip prefix-list deny seq 1 deny any
+!
+ip prefix-list deny-default-route seq 1 deny 0.0.0.0/0
+ip prefix-list deny-default-route seq 2 permit 0.0.0.0/0 le 24
+!
 <% if ! @enable_advertisements or ! @enable_advertisements_v4 then -%>
 ip prefix-list prefix-v4 seq 1 deny any
 <%- end -%>
+<%- @prefix_v4_index = 1 -%>
+<%- if ! @zone_status_errors and ! @failover_server then -%>
+  <%- @networks4.each do |network| -%>
+    <%- @prefix_v4_index += 1 -%>
+ip prefix-list prefix-v4 seq <%= @prefix_v4_index %> permit <%= network %>
+  <%- end -%>
+<%- end -%>
+<%- @failsafe_networks4.each do |network| -%>
+  <%- @prefix_v4_index += 1 -%>
+ip prefix-list prefix-v4 seq <%= @prefix_v4_index %> permit <%= network %>
+<%- end -%>
+!
+<%- @networks4.each_with_index do |network, index| -%>
+ip prefix-list specific-v4 seq <%= index + 1 %> permit <%= network %>
+<%- end -%>
+!
+ipv6 prefix-list default-route seq 1 permit ::/0
+!
+ipv6 prefix-list deny seq 1 deny any
+!
+ipv6 prefix-list deny-default-route seq 1 deny ::/0
+ipv6 prefix-list deny-default-route seq 2 permit ::/0 le 48
+!
 <% if ! @enable_advertisements or ! @enable_advertisements_v6 then -%>
 ipv6 prefix-list prefix-v6 seq 1 deny any
 <%- end -%>
+<%- @prefix_v6_index = 1 -%>
+<%- if ! @zone_status_errors and ! @failover_server then -%>
+  <%- @networks6.each do |network| -%>
+    <%- @prefix_v6_index += 1 -%>
+ipv6 prefix-list prefix-v6 seq <%= @prefix_v6_index %> permit <%= network %>
+  <%- end -%>
+<%- end -%>
+<%- @failsafe_networks6.each do |network| -%>
+  <%- @prefix_v6_index += 1 -%>
+ipv6 prefix-list prefix-v6 seq <%= @prefix_v6_index %> permit <%= network %>
+<%- end -%>
 !
-<%- if @networks4 then -%>
-  <%- @networks4.each_with_index do |network, index| -%>
-ip prefix-list prefix-v4 seq <%= index + 2 %> permit <%= network %>
-  <%- end %>
-<%- end %>
+<%- @networks6.each_with_index do |network, index| -%>
+ipv6 prefix-list specific-v6 seq <%= index + 1 %> permit <%= network %>
+<%- end -%>
 !
-<%- if @networks6 then -%>
-  <%- @networks6.each_with_index do |network, index| -%>
-ipv6 prefix-list prefix-v6 seq <%= index + 2 %> permit <%= network %>
-  <%- end %>
-<%- end %>
-!
-<% @peers.each_pair do |as, config| -%>
+<% @peers.each_pair do |as, config|
+    if config['community'].is_a?(String) then
+      config['community'] = [config['community']]
+    end 
+    if config.has_key?('community') then
+      @no_export = config['community'].delete('no-export')
+    end
+    @prepend = false
+    if config['prepend']
+      @prepend = " #{@my_asn}" * config['prepend'].to_i 
+    end
+  -%>
   <%- if config['localpref'] -%>
-route-map LOCALPREF-<%= as %> permit 10
+route-map inbound-<%= as %> permit 10
   set local-preference <%= config['localpref'] %>
+!
+  <%- end -%>
+  <%- if @no_export -%>
+route-map outbound-<%= as %> permit 10
+  match ip address prefix-list specific-v4
+  set community <%= config['community'].join(' ') %> <%- if @no_export -%> no-export<%- end %>
+    <%- if @prepend -%>
+  set as-path prepend<%= @prepend %>
+    <%- end -%>
+  <%- end -%>
+  <%- if @prepend or config['community'] then -%>
+route-map outbound-<%= as %> permit 20
+  <%- end -%>
+  <%- if @prepend -%>
+  set as-path prepend<%= @prepend %>
+  <%- end -%>
+  <%- if config.has_key?('community') and config['community'].any? -%>
+  set community <%= config['community'].join(' ') %>
   <%- end -%>
 !
-  <%- if config['community'] -%>
-route-map COMMUNITY-<%= as %> permit 10
-  set community <%= config['community'] %>
+  <%- if @no_export -%>
+route-map outbound-<%= as %>-v6 permit 10
+  match ip address prefix-list specific-v6
+  set community <%= config['community'].join(' ') %> <%- if @no_export -%> no-export<%- end %>
+    <%- if @prepend -%>
+  set as-path prepend<%= @prepend %>
+    <%- end -%>
+  <%- end -%>
+  <%- if @prepend or config['community'] then -%>
+route-map outbound-<%= as %>-v6 permit 20
+  <%- end -%>
+  <%- if @prepend -%>
+  set as-path prepend<%= @prepend %>
+  <%- end -%>
+  <%- if config.has_key?('community') and config['community'].any? -%>
+  set community <%= config['community'].join(' ') %>
   <%- end -%>
 !
 <%- end -%>

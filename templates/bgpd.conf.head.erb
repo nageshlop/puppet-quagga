@@ -1,0 +1,18 @@
+!
+! This file is managed by Puppet. DO NOT EDIT.
+!
+hostname <%= @fqdn %>
+!
+router bgp <%= @my_asn %>
+!
+ bgp router-id <%= @router_id %>
+<%- if @networks4 then -%>
+  <%- @networks4.each do |network| -%>
+ network <%= network %>
+  <%- end -%>
+<%- end -%>
+<%- if @failsafe_networks4 then -%>
+  <%- @failsafe_networks4.each do |network| -%>
+ network <%= network %>
+  <%- end -%>
+<%- end -%>
