@@ -112,8 +112,8 @@ class { '::quagga::bgpd':
       'addr6'          => ['2001:DB8::2'],
       'desc'           => 'TEST Network',
       'inbound_routes' => 'all',
-      'community'      => ['no-export', '64497:100' ],
-      'localpref       => 100,
+      'communities'    => ['no-export', '64497:100' ],
+      'localpref'      => 100,
       'multihop'       => 5,
       'password'       => 'password',
       'prepend'        => 3,
@@ -187,10 +187,11 @@ Creat config for individual peers
 * `addr4` (Array, Default: []): Array of IPv4 neighbor addresses
 * `addr6` (Array, Default: []): Array of IPv6 neighbor addresses
 * `desc` (String, Default: undef): Description of the peer
-* `inbound_routes` (String /^(all|none|default)$/, Default: undef): what ACL to apply for inbound routes.  
-    * all: accept all routes
+* `inbound_routes` (String /^(all|none|v6default)$/, Default: 'none'): what ACL to apply for inbound routes.  
+    * all: accept all but the default route
     * none: accept no routes
-    * default: accept only a default route
+    * default: does the same as defaultv6
+    * v6default: accept a default v6 route
 * `communities` (Array, Default: []): Array of comminuties to set on advertised routes.
 * `localpref` (Int, Default: undef): Localpref to set on inbund routes we recive
 * `multihop` (Int, Default: undef): Multihop setting to set on peers neighbor addresses

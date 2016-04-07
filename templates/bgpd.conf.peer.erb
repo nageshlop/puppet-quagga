@@ -13,16 +13,10 @@
       <%- end -%>
  neighbor <%= addr %> soft-reconfiguration inbound
  neighbor <%= addr %> prefix-list prefix-v4 out
-      <%- if @inbound_routes.to_s == 'default' or @inbound_routes.to_s == 'v4default' then -%>
-! Config hardcoded here to deny any default route learning over IPv4         
- neighbor <%= addr %> prefix-list deny in  
-      <%- elsif @inbound_routes.to_s == 'all' then -%>
+      <%- if @inbound_routes.to_s == 'all' then -%>
  neighbor <%= addr %> prefix-list deny-default-route in
       <%- else -%>
  neighbor <%= addr %> prefix-list deny in
-      <%- end -%>
-      <%- if @localpref then -%>
- neighbor <%= addr %> route-map inbound-<%= @name %> in
       <%- end -%>
       <%- if @communities.any? or @prepend then -%>
  neighbor <%= addr %> route-map outbound-<%= @name %> out
