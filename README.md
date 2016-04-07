@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/icann-dns/puppet-quagga.svg?branch=master)](https://travis-ci.org/icann-dns/puppet-quagga)
-# quagga
+# Quagga
 
 #### Table of Contents
 
