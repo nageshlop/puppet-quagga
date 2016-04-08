@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/icann-dns/puppet-quagga.svg?branch=master)](https://travis-ci.org/icann-dns/puppet-quagga)
 # Quagga
 
-#### Table of Contents
+### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
