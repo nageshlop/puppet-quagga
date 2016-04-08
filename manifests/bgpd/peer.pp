@@ -23,17 +23,17 @@ define quagga::bgpd::peer (
   concat::fragment{"bgpd_peer_${name}":
     target  => $::quagga::bgpd::conf_file,
     content => template('quagga/bgpd.conf.peer.erb'),
-    order   => 10,
+    order   => '10',
   }
   concat::fragment{"bgpd_v6peer_${name}":
     target  => $::quagga::bgpd::conf_file,
     content => template('quagga/bgpd.conf.v6peer.erb'),
-    order   => 40,
+    order   => '40',
   }
   concat::fragment{ 'quagga_bgpd_routemap':
     target  => $::quagga::bgpd::conf_file,
     content => template('quagga/bgpd.conf.routemap.erb'),
-    order   => 90,
+    order   => '90',
   }
   if $::quagga::bgpd::manage_nagios {
     if $::quagga::bgpd::enable_advertisements {

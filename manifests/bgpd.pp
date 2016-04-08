@@ -39,27 +39,27 @@ class quagga::bgpd (
   concat::fragment{ 'quagga_bgpd_head':
     target  => $conf_file,
     content => template('quagga/bgpd.conf.head.erb'),
-    order   => 01,
+    order   => '01',
   }
   concat::fragment{ 'quagga_bgpd_v6head':
     target  => $conf_file,
     content => "!\n address-family ipv6\n",
-    order   => 30,
+    order   => '30',
   }
   concat::fragment{ 'quagga_bgpd_v6foot':
     target  => $conf_file,
     content => template('quagga/bgpd.conf.v6foot.erb'),
-    order   => 50,
+    order   => '50',
   }
   concat::fragment{ 'quagga_bgpd_acl':
     target  => $conf_file,
     content => template('quagga/bgpd.conf.acl.erb'),
-    order   => 80,
+    order   => '80',
   }
   concat::fragment{ 'quagga_bgpd_foot':
     target  => $conf_file,
     content => "line vty\n!\n",
-    order   => 99,
+    order   => '99',
   }
   create_resources(quagga::bgpd::peer, $peers)
 }
