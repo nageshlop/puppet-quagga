@@ -9,7 +9,7 @@ include RspecPuppetFacts
 at_exit { RSpec::Puppet::Coverage.report! }
 
 #set to "yes" to enable the future parser, the equivalent of setting parser=future in puppet.conf.
-ENV['FUTURE_PARSER'] = 'yes'
+#ENV['FUTURE_PARSER'] = 'yes'
 
 # set to "yes" to enable strict variable checking, the equivalent of setting strict_variables=true in puppet.conf.
 #ENV['STRICT_VARIABLES'] = 'yes'
