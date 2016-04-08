@@ -8,7 +8,7 @@ class quagga (
   $package      = 'quagga',
   $enable_zebra = true,
   $content      = $::quagga::params::content,
-) inherits quagga::params {
+) inherits ::quagga::params {
   validate_string($owner)
   validate_string($group)
   validate_re($mode, '^\d+$')
