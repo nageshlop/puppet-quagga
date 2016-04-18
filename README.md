@@ -16,11 +16,11 @@
 
 ## Overview
 
-Manage the installation and configuration of Quagga (name serve daemon) and zone files.
+Manage the installation and configuration of Quagga (Routing Daemons) .
 
 ## Module Description
 
-This modules allows for the manging of the quagga BGP daemon.  Other routing modules are currently unsupported however you should be able to configure them manuly
+This modules allows for the manging of the quagga BGP daemon. Other routing modules are currently unsupported however you should be able to configure them manuly
 
 ## Setup
 
@@ -99,9 +99,11 @@ class { '::quagga::bgpd':
   my_asn                   => 64496,
   router_id                => 192.0.2.1,
   networks4                => [ '192.0.2.0/24', '10.0.0.0/24'],
+  deny_prefix4             => ['192.168.0.0/16 le 24'],
   failsafe_networks4       => ['10.0.0.0/23'],
   networks6                => ['2001:DB8::/48'],
-  failsafe_networks6       => ['2001:DB8::/32']
+  deny_prefix6             => ['2001::/48'],
+  failsafe_networks6       => ['2001:DB8::/32'],
   enable_advertisements    => false,
   enable_advertisements_v4 => false,
   enable_advertisements_v6 => false,
@@ -158,8 +160,10 @@ class { '::quagga::bgpd':
 * `my_asn` (Int, Default: undef): The local ASN to use
 * `router_id` (IP Address, Default: undef): IP address for the router ID
 * `networks4` (Array, Default: []): Array ip IPv4 networks in CIDR format to configure
+* `deny_prefix4` (Array, Default: []): Array ip IPv4 networks in CIDR format to deny from peers
 * `failsafe_networks4` (Array, Default: []): Array ip IPv4 failsafe networks in CIDR format to configure.  Failsafe networks consist of covering prefixes for the IPv4 networks.  if the policy decided to disable advertising due to detected errors it will leave the failsafe network inplace.  This is a specific use case for anycast networks which effectivly disables an anycast node as all others will still be advertising a more specific network; however if something goes wrong and all nodes have the most specific route removed then we would still have this failsafe network in place.  
 * `networks6` (Array, Default: []): Array ip IPv6 networks in CIDR format to configure
+* `deny_prefix6` (Array, Default: []): Array ip IPv6 networks in CIDR format to deny from peers
 * `failsafe_networks4` (Array, Default: []): Array ip IPv6 failsafe networks in CIDR format to configure.  See failsafe_networks4 for a description
 * `failsafe_server` (Bool, Default: false): If this is set to true then we will only ever advertise the failsafe networks.  i.e. the node will be effectivly ofline unless all other nodes are either out of commision or remove ther most specific networks (`networks4` and `networks6`)
 * `enable_advertisements` (Bool, Default: true): If this is set to false then no networks, including the failsafe networks, will be advertised.

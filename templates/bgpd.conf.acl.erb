@@ -8,7 +8,11 @@ ip prefix-list default-route seq 1 permit 0.0.0.0/0
 ip prefix-list deny seq 1 deny any
 !
 ip prefix-list deny-default-route seq 1 deny 0.0.0.0/0
-ip prefix-list deny-default-route seq 2 permit 0.0.0.0/0 le 24
+<%- @deny_prefix4.each do |deny_prefix| -%>
+  <%- @deny_prefix4_index += 1 -%>
+ip prefix-list deny-default-route seq <%= @deny_prefix4_index %> deny <%= deny_prefix %>
+<%- end -%>
+ip prefix-list deny-default-route seq 20 permit 0.0.0.0/0 le 24
 !
 <% if ! @enable_advertisements or ! @enable_advertisements_v4 then -%>
 ip prefix-list prefix-v4 seq 1 deny any
@@ -34,7 +38,11 @@ ipv6 prefix-list default-route seq 1 permit ::/0
 ipv6 prefix-list deny seq 1 deny any
 !
 ipv6 prefix-list deny-default-route seq 1 deny ::/0
-ipv6 prefix-list deny-default-route seq 2 permit ::/0 le 48
+<%- @deny_prefix6.each do |deny_prefix| -%>
+  <%- @deny_prefix6_index += 1 -%>
+ipv6 prefix-list deny-default-route seq <%= @deny_prefix6_index %> deny <%= deny_prefix %>
+<%- end -%>
+ipv6 prefix-list deny-default-route seq 20 permit ::/0 le 48
 !
 <% if ! @enable_advertisements or ! @enable_advertisements_v6 then -%>
 ipv6 prefix-list prefix-v6 seq 1 deny any
