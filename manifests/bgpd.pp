@@ -8,8 +8,6 @@ class quagga::bgpd (
   $networks6                = [],
   $failsafe_networks6       = [],
   $failover_server          = false,
-  $deny_prefix4             = [],
-  $deny_prefix6             = [],
   $enable_advertisements    = true,
   $enable_advertisements_v4 = true,
   $enable_advertisements_v6 = true,
@@ -27,8 +25,6 @@ class quagga::bgpd (
   validate_array($networks6)
   validate_array($failsafe_networks6)
   validate_bool($failover_server)
-  validate_array($deny_prefix4)
-  validate_array($deny_prefix6)
   validate_bool($enable_advertisements)
   validate_bool($enable_advertisements_v4)
   validate_bool($enable_advertisements_v6)
