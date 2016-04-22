@@ -20,15 +20,19 @@ define quagga::bgpd::peer (
   if $prepend { validate_integer($prepend) }
   $my_asn = $::quagga::bgpd::my_asn
   
-  concat::fragment{"bgpd_peer_${name}":
-    target  => $::quagga::bgpd::conf_file,
-    content => template('quagga/bgpd.conf.peer.erb'),
-    order   => '10',
+  if count($addr4) > 0 {
+    concat::fragment{"bgpd_peer_${name}":
+      target  => $::quagga::bgpd::conf_file,
+      content => template('quagga/bgpd.conf.peer.erb'),
+      order   => '10',
+    }
   }
-  concat::fragment{"bgpd_v6peer_${name}":
-    target  => $::quagga::bgpd::conf_file,
-    content => template('quagga/bgpd.conf.v6peer.erb'),
-    order   => '40',
+  if count($addr6) > 0 {
+    concat::fragment{"bgpd_v6peer_${name}":
+      target  => $::quagga::bgpd::conf_file,
+      content => template('quagga/bgpd.conf.v6peer.erb'),
+      order   => '40',
+    }
   }
   concat::fragment{ 'quagga_bgpd_routemap':
     target  => $::quagga::bgpd::conf_file,
@@ -37,12 +41,12 @@ define quagga::bgpd::peer (
   }
   if $::quagga::bgpd::manage_nagios {
     if $::quagga::bgpd::enable_advertisements {
-      if $::quagga::bgpd::enable_advertisements_v4 {
+      if $::quagga::bgpd::enable_advertisements_v4 and count($addr4) > 0 {
         quagga::bgpd::peer::nagios {$addr4:
           routes => concat($::quagga::bgpd::networks4, $::quagga::bgpd::failsafe_networks4),
         }
       }
-      if $::quagga::bgpd::enable_advertisements_v6 {
+      if $::quagga::bgpd::enable_advertisements_v6 and count($addr6) > 0 {
         quagga::bgpd::peer::nagios {$addr6:
           routes => concat($::quagga::bgpd::networks6, $::quagga::bgpd::failsafe_networks6),
         }

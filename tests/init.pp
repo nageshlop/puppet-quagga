@@ -1,1 +1,2 @@
-include quagga
+class { '::quagga': }
+class { '::quagga::bgpd': }

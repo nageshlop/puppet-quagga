@@ -27,7 +27,7 @@ describe 'quagga' do
             #:group => "quagga",
             #:mode => "0664",
             #:package => "quagga",
-            #:enable_zebra => true,
+            #:enable => true,
             content: 'hostname test'
           }
         end
@@ -83,13 +83,6 @@ describe 'quagga' do
               'value'   => 'yes'
             )
         end
-        it do
-          is_expected.to contain_ini_setting('bgpd')
-            .with(
-              'setting' => 'bgpd',
-              'value'   => 'no'
-            )
-        end
       end
 
       describe 'check changin default parameters' do
@@ -111,8 +104,8 @@ describe 'quagga' do
           let(:params) {{ package: 'foo' }}
           it { is_expected.to contain_package('foo') }
         end
-        context 'enable_zebra' do
-          let(:params) {{ enable_zebra: false }}
+        context 'enable' do
+          let(:params) {{ enable: false }}
           it { is_expected.to contain_ini_setting('zebra').with(
             setting: 'zebra',
             value:   'no',
@@ -141,8 +134,8 @@ describe 'quagga' do
           let(:params) {{ package: {} }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
-        context 'enable_zebra' do
-          let(:params) {{ enable_zebra: 'false' }}
+        context 'enable' do
+          let(:params) {{ enable: 'false' }}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'content' do

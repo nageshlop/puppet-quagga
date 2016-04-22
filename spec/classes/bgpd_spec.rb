@@ -15,6 +15,7 @@ describe 'quagga::bgpd' do
   let(:params) do
     {
       :my_asn => 64496,
+      :enable => true,
       :router_id => '192.0.2.1',
       :networks4 => ['192.0.2.0/25'],
       :failsafe_networks4 => ['192.0.2.0/24'],
@@ -147,6 +148,13 @@ describe 'quagga::bgpd' do
           'order'   => '99',
           'target'  => '/etc/quagga/bgpd.conf'
         )
+        end
+        it do
+          is_expected.to contain_ini_setting('bgpd')
+            .with(
+              'setting' => 'bgpd',
+              'value'   => 'yes'
+            )
         end
       end
 
@@ -360,6 +368,17 @@ describe 'quagga::bgpd' do
               )
           end
         end
+        context 'disable' do
+          before { params.merge!(enable: false) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_ini_setting('bgpd')
+              .with(
+                'setting' => 'bgpd',
+                'value'   => 'no'
+              )
+          end
+        end
       end
 
       # You will have to correct any values that should be bool
@@ -414,6 +433,10 @@ describe 'quagga::bgpd' do
         end
         context 'peers' do
           before { params.merge!(peers: false)}
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'enable' do
+          before { params.merge!(enable: [])}
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end

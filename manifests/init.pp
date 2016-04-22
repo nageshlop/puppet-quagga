@@ -6,14 +6,14 @@ class quagga (
   $group        = 'quagga',
   $mode         = '0664',
   $package      = 'quagga',
-  $enable_zebra = true,
+  $enable       = true,
   $content      = $::quagga::params::content,
 ) inherits ::quagga::params {
   validate_string($owner)
   validate_string($group)
   validate_re($mode, '^\d+$')
   validate_string($package)
-  validate_bool($enable_zebra)
+  validate_bool($enable)
   validate_string($content)
 
   ensure_packages([$package])
@@ -52,7 +52,7 @@ class quagga (
     require => Package[ $package ],
     notify  => Service['quagga'],
   }
-  if $enable_zebra {
+  if $enable {
     ini_setting {
       'zebra':
         setting => 'zebra',
@@ -62,19 +62,6 @@ class quagga (
     ini_setting {
       'zebra':
         setting => 'zebra',
-        value   => 'no',
-    }
-  }
-  if defined(Class['::quagga::bgpd']) {
-    ini_setting {
-      'bgpd':
-        setting => 'bgpd',
-        value   => 'yes',
-    }
-  } else {
-    ini_setting {
-      'bgpd':
-        setting => 'bgpd',
         value   => 'no',
     }
   }

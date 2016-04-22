@@ -3,6 +3,7 @@
 class quagga::bgpd (
   $my_asn                   = undef,
   $router_id                = undef,
+  $enable                   = true,
   $networks4                = [],
   $failsafe_networks4       = [],
   $networks6                = [],
@@ -32,6 +33,22 @@ class quagga::bgpd (
   validate_absolute_path($conf_file)
   validate_hash($peers)
 
+  Ini_setting {
+    path    => '/etc/quagga/daemons',
+    section => '',
+    notify  => Service['quagga'],
+  }
+  if $enable {
+    ini_setting {'bgpd':
+      setting => 'bgpd',
+      value   => 'yes',
+    }
+  } else {
+    ini_setting {'bgpd':
+      setting => 'bgpd',
+      value   => 'yes',
+    }
+  }
   concat{$conf_file:
     require => Package[ $::quagga::package ],
     notify  => Service['quagga'],
