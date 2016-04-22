@@ -21,6 +21,7 @@ class quagga::bgpd (
 
   validate_integer($my_asn)
   validate_ip_address($router_id)
+  validate_bool($enable)
   validate_array($networks4)
   validate_array($failsafe_networks4)
   validate_array($networks6)
@@ -46,7 +47,7 @@ class quagga::bgpd (
   } else {
     ini_setting {'bgpd':
       setting => 'bgpd',
-      value   => 'yes',
+      value   => 'no',
     }
   }
   concat{$conf_file:

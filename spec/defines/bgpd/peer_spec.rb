@@ -68,7 +68,7 @@ describe 'quagga::bgpd::peer' do
             )
         end
         it do
-          is_expected.to contain_concat__fragment('bgpd_v6peer_64497')
+          is_expected.to_not contain_concat__fragment('bgpd_v6peer_64497')
             .with(
               'content' => '',
               'order'   => '40',
