@@ -1,4 +1,4 @@
-<%- if @addr4 then -%>
+<%- if @addr4.any? then -%>
   <%- @addr4.each do |addr| -%>
     <%- if addr then -%>
  neighbor <%= addr %> remote-as <%= @name %>
@@ -24,7 +24,7 @@
     <%- end -%>
   <%- end -%>
 <%- end -%>
-<%- if @addr6 then -%>
+<%- if @addr6.any? then -%>
   <%- @addr6.each do |addr| -%>
     <%- if addr then -%>
  neighbor <%= addr %> remote-as <%= @name %>
