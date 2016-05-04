@@ -7,6 +7,7 @@ group :test do
     gem "puppetlabs_spec_helper"
     gem 'rspec-puppet-utils'
     gem 'hiera-puppet-helper', :git => 'https://github.com/bobtfish/hiera-puppet-helper.git'
+    gem 'ruby_dep', '~> 1.1'
     gem "metadata-json-lint"
     gem 'puppet-syntax'
     gem 'puppet-lint'
