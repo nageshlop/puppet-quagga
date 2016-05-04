@@ -9,9 +9,6 @@ HOSTS:
     hypervisor: docker
     image: ubuntu:14.04
     docker_preserve_image: true
-    docker_options:
-      ipv6:
-      fixed_cidr_v6: '2001:db8:1::/64'
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
       # ensure that upstart is booting correctly in the container
@@ -25,9 +22,6 @@ HOSTS:
     hypervisor: docker
     image: ubuntu:14.04
     docker_preserve_image: true
-    docker_options:
-      ipv6:
-      fixed_cidr_v6: '2001:db8:1::/64'
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
       # ensure that upstart is booting correctly in the container
@@ -36,4 +30,4 @@ CONFIG:
   trace_limit: 200
   masterless: true
   type: foss
-  log_level: debug
+  #log_level: debug
