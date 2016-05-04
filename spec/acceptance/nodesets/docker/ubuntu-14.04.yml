@@ -36,4 +36,4 @@ CONFIG:
   trace_limit: 200
   masterless: true
   type: foss
-  #log_level: verbose
+  log_level: debug
