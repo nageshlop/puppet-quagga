@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 group :test do
     gem "rake"
+    gem "ethon", "<=0.8.1"
+    gem "rb-inotify", "<=0.9.5"
     gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 3.8.3'
     gem "rspec-puppet"
     gem "puppetlabs_spec_helper"
