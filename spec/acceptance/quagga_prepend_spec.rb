@@ -55,7 +55,7 @@ describe 'quagga class prepend router' do
       expect(apply_manifest(pp1,  :catch_failures => true).exit_code).to eq 0
       expect(apply_manifest_on(router2, pp2,  :catch_failures => true).exit_code).to eq 0
       #allow peers to configure and establish
-      sleep(5)
+      sleep(10)
     end
     describe command('cat /etc/quagga/bgpd.conf 2>&1' ) do
       its(:stdout) { should match(//) }
