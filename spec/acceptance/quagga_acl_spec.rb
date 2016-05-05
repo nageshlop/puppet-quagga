@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 
-describe 'quagga class communities router' do
+describe 'quagga class ACLs ' do
   router1 = find_host_with_role(:router1)
   router2 = find_host_with_role(:router2)
   router1_ip = fact_on(router1, "ipaddress")
@@ -28,7 +28,7 @@ describe 'quagga class communities router' do
           'addr4'          => ['#{router2_ip}'],
           'addr6'          => ['#{router2_ip6}'],
           'desc'           => 'TEST Network',
-          'inbound_routes' => 'all',
+          'inbound_routes' => 'none',
           }
       }
     }
@@ -42,10 +42,10 @@ describe 'quagga class communities router' do
       networks6 => [ '#{ipv6_network}', '#{additional_v6_network}'],
       peers => {
         '#{router1_asn}' => {
-          'addr4'       => ['#{router1_ip}'],
-          'addr6'       => ['#{router1_ip6}'],
-          'desc'        => 'TEST Network',
-          'communities' => ['no-export', '999:100'],
+          'addr4'             => ['#{router1_ip}'],
+          'addr6'             => ['#{router1_ip6}'],
+          'desc'              => 'TEST Network',
+          'default_originate' => true,
           }
       }
     }
@@ -55,7 +55,7 @@ describe 'quagga class communities router' do
       expect(apply_manifest(pp1,  :catch_failures => true).exit_code).to eq 0
       expect(apply_manifest_on(router2, pp2,  :catch_failures => true).exit_code).to eq 0
       #allow peers to configure and establish
-      sleep(5)
+      sleep(10)
     end
     describe command('cat /etc/quagga/bgpd.conf 2>&1' ) do
       its(:stdout) { should match(//) }
@@ -82,11 +82,9 @@ describe 'quagga class communities router' do
     describe command("vtysh -c \'show ip bgp neighbors #{router2_ip}\'") do
       its(:stdout) { should match(/BGP state = Established/) }
     end
-    describe command("vtysh -c \'show ip bgp community no-export\'") do
-      its(:stdout) { should match(/192.0.2.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}/) }
-    end
-    describe command("vtysh -c \'show ip bgp community 999:100\'") do
-      its(:stdout) { should match(/192.0.2.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}/) }
+    describe command("vtysh -c \'show ip bgp \'") do
+      its(:stdout) { should_not match(/192.0.2.0/) }
+      its(:stdout) { should_not match(/0.0.0.0/) }
     end
     describe command('vtysh -c \'show ipv6 bgp sum\'') do
       its(:stdout) { should match(/#{router2_ip6}\s+4\s+#{router2_asn}/i) }
@@ -94,11 +92,71 @@ describe 'quagga class communities router' do
     describe command("vtysh -c \'show ip bgp neighbors #{router2_ip6}\'") do
       its(:stdout) { should match(/BGP state = Established/) }
     end
-    describe command("vtysh -c \'show ipv6 bgp community no-export\'") do
-      its(:stdout) { should match(/#{additional_v6_network}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}/) }
+    describe command("vtysh -c \'show ipv6 bgp\'") do
+      its(:stdout) { should_not match(/#{additional_v6_network}/) }
+      its(:stdout) { should_not match(/::\/0/) }
     end
-    describe command("vtysh -c \'show ipv6 bgp community 999:100\'") do
+  end
+  context 'all' do
+    it 'appling all acl' do 
+      pp1 = <<-EOF
+    class { '::quagga': }
+    class { '::quagga::bgpd': 
+      my_asn => #{router1_asn},
+      router_id => '#{router1_ip}',
+      peers => {
+        '#{router2_asn}' => {
+          'addr4'          => ['#{router2_ip}'],
+          'addr6'          => ['#{router2_ip6}'],
+          'desc'           => 'TEST Network',
+          'inbound_routes' => 'all',
+          }
+      }
+    }
+    EOF
+      apply_manifest(pp1 ,  :catch_failures => true)
+      expect(apply_manifest(pp1,  :catch_failures => true).exit_code).to eq 0
+      #allow peers to configure and establish
+      sleep(10)
+    end
+    describe command("vtysh -c \'show ip bgp \'") do
+      its(:stdout) { should match(/192.0.2.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}/) }
+      its(:stdout) { should_not match(/0.0.0.0/) }
+    end
+    describe command("vtysh -c \'show ipv6 bgp \'") do
       its(:stdout) { should match(/#{additional_v6_network}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}/) }
+      its(:stdout) { should_not match(/::\/0/) }
+    end
+  end
+  context 'default' do
+    it 'appling default acl' do 
+      pp1 = <<-EOF
+    class { '::quagga': }
+    class { '::quagga::bgpd': 
+      my_asn => #{router1_asn},
+      router_id => '#{router1_ip}',
+      peers => {
+        '#{router2_asn}' => {
+          'addr4'          => ['#{router2_ip}'],
+          'addr6'          => ['#{router2_ip6}'],
+          'desc'           => 'TEST Network',
+          'inbound_routes' => 'default',
+          }
+      }
+    }
+    EOF
+      apply_manifest(pp1 ,  :catch_failures => true)
+      expect(apply_manifest(pp1,  :catch_failures => true).exit_code).to eq 0
+      #allow peers to configure and establish
+      sleep(10)
+    end
+    describe command("vtysh -c \'show ip bgp \'") do
+      its(:stdout) { should_not match(/192.0.2.0/) }
+      its(:stdout) { should_not match(/0.0.0.0/) }
+    end
+    describe command("vtysh -c \'show ipv6 bgp \'") do
+      its(:stdout) { should_not match(/#{additional_v6_network}/) }
+      its(:stdout) { should match(/::\/0\s+#{router2_ip6}\s+\d+\s+#{router2_asn}/) }
     end
   end
 end

@@ -1,14 +1,15 @@
 # quagga::bgpd::peer
 #
 define quagga::bgpd::peer (
-  $addr4          = [],
-  $addr6          = [],
-  $desc           = undef,
-  $inbound_routes = 'none',
-  $communities    = [],
-  $multihop       = undef,
-  $password       = undef,
-  $prepend        = undef,
+  $addr4             = [],
+  $addr6             = [],
+  $desc              = undef,
+  $inbound_routes    = 'none',
+  $communities       = [],
+  $multihop          = undef,
+  $password          = undef,
+  $prepend           = undef,
+  $default_originate = false,
 ) {
   validate_array($addr4)
   validate_array($addr6)
@@ -18,6 +19,7 @@ define quagga::bgpd::peer (
   if $multihop { validate_integer($multihop) }
   if $password { validate_string($password) }
   if $prepend { validate_integer($prepend) }
+  validate_bool($default_originate)
   $my_asn = $::quagga::bgpd::my_asn
   
   if count($addr4) > 0 or count($addr6) > 0 {

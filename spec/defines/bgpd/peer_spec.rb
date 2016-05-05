@@ -296,9 +296,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).without_content(
               /no-export/
             ).with_content(
@@ -352,9 +352,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).without_content(
               /no-export/
             ).with_content(
@@ -381,9 +381,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).with_content(
               /set community 666:666 no-export/
             )
@@ -417,9 +417,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).without_content(
               /no-export/
             ).with_content(
@@ -491,9 +491,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).without_content(
               /no-export/
             ).with_content(
@@ -529,9 +529,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).with_content(
               /set community 666:666 no-export/
             )
@@ -616,7 +616,7 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
               /set as-path prepend 64496 64496 64496/
             )
@@ -650,9 +650,9 @@ describe 'quagga::bgpd::peer' do
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
-              /route-map outbound-64497 permit 20/
+              /route-map outbound-64497 permit 10/
             ).with_content(
-              /route-map outbound-64497-v6 permit 20/
+              /route-map outbound-64497-v6 permit 10/
             ).with_content(
               /set as-path prepend 64496 64496 64496/
             )
