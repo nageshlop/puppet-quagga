@@ -1,7 +1,3 @@
-<%- if @zone_status_errors.is_a?(String) then
-  #deal with stringify_facts = true 
-  @zone_status_errors = eval(@zone_status_errors)
-end -%> 
 !
 ip prefix-list default-route seq 1 permit 0.0.0.0/0
 !
@@ -14,7 +10,7 @@ ip prefix-list deny-default-route seq 2 permit 0.0.0.0/0 le 24
 ip prefix-list prefix-v4 seq 1 deny any
 <%- end -%>
 <%- @prefix_v4_index = 1 -%>
-<%- if ! @zone_status_errors and ! @failover_server then -%>
+<%- if ! @failover_server then -%>
   <%- @networks4.each do |network| -%>
     <%- @prefix_v4_index += 1 -%>
 ip prefix-list prefix-v4 seq <%= @prefix_v4_index %> permit <%= network %>
@@ -40,7 +36,7 @@ ipv6 prefix-list deny-default-route seq 2 permit ::/0 le 48
 ipv6 prefix-list prefix-v6 seq 1 deny any
 <%- end -%>
 <%- @prefix_v6_index = 1 -%>
-<%- if ! @zone_status_errors and ! @failover_server then -%>
+<%- if ! @failover_server then -%>
   <%- @networks6.each do |network| -%>
     <%- @prefix_v6_index += 1 -%>
 ipv6 prefix-list prefix-v6 seq <%= @prefix_v6_index %> permit <%= network %>
