@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/icann-dns/puppet-quagga.svg?branch=master)](https://travis-ci.org/icann-dns/puppet-quagga)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/icann/quagga.svg?maxAge=2592000)](https://forge.puppet.com/icann/quagga)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/icann/quagga.svg?maxAge=2592000)](https://forge.puppet.com/icann/quagga)
 # Quagga
 
 ### Table of Contents
