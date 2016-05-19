@@ -1,4 +1,7 @@
-## 2015-05-11 0.2.0
+## 2016-05-19 0.2.1
+minor fixs ro docs
+
+## 2016-05-19 0.2.0
 Refactor module to add spec and beaker tests
 
 ## 2015-05-11 v0.1.3
