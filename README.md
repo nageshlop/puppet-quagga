@@ -30,7 +30,7 @@ This modules allows for the manging of the quagga BGP daemon. Other routing modu
 * Manages the quagga bgpd configueration file 
 * can export nagios\_service to test neighbours are Established and routes are being advertised
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
 * depends on stdlib 4.11.0 (may work with earlier versions)
 
@@ -48,7 +48,7 @@ With some bgp peers
 class { '::quagga': }
 class { '::quagga::bgpd':
   my_asn => 64496,
-  router_id => 192.0.2.1,
+  router_id => '192.0.2.1',
   networks4 => [ '192.0.2.0/24'],
   peers => {
     '64497' => {
@@ -62,10 +62,10 @@ class { '::quagga::bgpd':
 and in hiera
 
 ```yaml
-my_asn => 64496,
+my_asn: 64496,
 router_id: 192.0.2.1
 networks4:
-- '192.0.2.0/24
+- '192.0.2.0/24'
 peers:
   64497:
     addr4:
@@ -80,7 +80,7 @@ Add config but disable advertisments and add nagios checks
 ```puppet
 class { '::quagga::bgpd':
   my_asn => 64496,
-  router_id => 192.0.2.1,
+  router_id => '192.0.2.1',
   networks4 => [ '192.0.2.0/24'],
   enable_advertisements => false,
   peers => {
@@ -97,7 +97,7 @@ Full config
 ```puppet
 class { '::quagga::bgpd':
   my_asn                   => 64496,
-  router_id                => 192.0.2.1,
+  router_id                => '192.0.2.1',
   networks4                => [ '192.0.2.0/24', '10.0.0.0/24'],
   failsafe_networks4       => ['10.0.0.0/23'],
   networks6                => ['2001:DB8::/48'],
