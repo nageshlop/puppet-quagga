@@ -152,7 +152,7 @@ describe 'quagga class ACLs ' do
     end
     describe command("vtysh -c \'show ip bgp \'") do
       its(:stdout) { should_not match(/192.0.2.0/) }
-      its(:stdout) { should_not match(/0.0.0.0/) }
+      its(:stdout) { should match(/0.0.0.0\s+#{router2_ip}\s+\d+\s+#{router2_asn}/) }
     end
     describe command("vtysh -c \'show ipv6 bgp \'") do
       its(:stdout) { should_not match(/#{additional_v6_network}/) }
