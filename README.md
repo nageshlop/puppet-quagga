@@ -113,7 +113,6 @@ class { '::quagga::bgpd':
       'desc'           => 'TEST Network',
       'inbound_routes' => 'all',
       'communities'    => ['no-export', '64497:100' ],
-      'localpref'      => 100,
       'multihop'       => 5,
       'password'       => 'password',
       'prepend'        => 3,
@@ -193,7 +192,6 @@ Creat config for individual peers
     * default: does the same as defaultv6
     * v6default: accept a default v6 route
 * `communities` (Array, Default: []): Array of comminuties to set on advertised routes.
-* `localpref` (Int, Default: undef): Localpref to set on inbund routes we recive
 * `multihop` (Int, Default: undef): Multihop setting to set on peers neighbor addresses
 * `password` (String, Default: undef): Password setting to set on peers neighbor addresses
 * `prepend` (Int, Default: undef): Number of times to prepend your own ASN on advertised routes
@@ -214,7 +212,6 @@ configure exported nagios servies for specific neighbor addresses
 This module has been tested on:
 
 * Ubuntu 12.04, 14.04
-* FreeBSD 10
 
 ## Development
 

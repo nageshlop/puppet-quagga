@@ -184,6 +184,8 @@ describe 'quagga::bgpd::peer' do
               'target'  => '/etc/quagga/bgpd.conf'
             ).without_content(
               /neighbor 192.0.2.2 prefix-list deny in/
+            ).without_content(
+              /neighbor 192.0.2.2 prefix-list default-route in/
             ).with_content(
               /neighbor 192.0.2.2 prefix-list deny-default-route in/
             )
@@ -200,8 +202,28 @@ describe 'quagga::bgpd::peer' do
               'target'  => '/etc/quagga/bgpd.conf'
             ).without_content(
               /neighbor 192.0.2.2 prefix-list deny-default-route in/
-            ).with_content(
+            ).without_content(
               /neighbor 192.0.2.2 prefix-list deny in/
+            ).with_content(
+              /neighbor 192.0.2.2 prefix-list default-route in/
+            )
+          end
+        end
+        context 'inbound_routes default' do
+          before { params.merge!( inbound_routes: 'v4default' ) }
+          it { is_expected.to compile }
+          # Add Check to validate change was successful
+          it do
+            is_expected.to contain_concat__fragment('bgpd_peer_64497')
+            .with(
+              'order'   => '10',
+              'target'  => '/etc/quagga/bgpd.conf'
+            ).without_content(
+              /neighbor 192.0.2.2 prefix-list deny-default-route in/
+            ).without_content(
+              /neighbor 192.0.2.2 prefix-list deny in/
+            ).with_content(
+              /neighbor 192.0.2.2 prefix-list default-route in/
             )
           end
         end

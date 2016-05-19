@@ -14,7 +14,7 @@ define quagga::bgpd::peer (
   validate_array($addr4)
   validate_array($addr6)
   validate_string($desc)
-  validate_re($inbound_routes, '^(all|none|default|v6default)$')
+  validate_re($inbound_routes, '^(all|none|default|v6default|v4default)$')
   if $communities { validate_array($communities) }
   if $multihop { validate_integer($multihop) }
   if $password { validate_string($password) }
