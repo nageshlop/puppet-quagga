@@ -186,10 +186,11 @@ Creat config for individual peers
 * `addr4` (Array, Default: []): Array of IPv4 neighbor addresses
 * `addr6` (Array, Default: []): Array of IPv6 neighbor addresses
 * `desc` (String, Default: undef): Description of the peer
-* `inbound_routes` (String /^(all|none|v6default)$/, Default: 'none'): what ACL to apply for inbound routes.  
+* `inbound_routes` (String /^(all|none|default|v4|default|v6default)$/, Default: 'none'): what ACL to apply for inbound routes.  
     * all: accept all but the default route
     * none: accept no routes
-    * default: does the same as defaultv6
+    * default: only accept default routes
+    * v4default: only accept default routes over ipv4
     * v6default: accept a default v6 route
 * `communities` (Array, Default: []): Array of comminuties to set on advertised routes.
 * `multihop` (Int, Default: undef): Multihop setting to set on peers neighbor addresses
