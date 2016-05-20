@@ -1,3 +1,7 @@
+## 2016-05-20 0.2.3
+* Fix bug preventing multible peers
+* add beaker and rspec tests for multible peers
+
 ## 2016-05-19 0.2.2
 * Fix the change log
 
