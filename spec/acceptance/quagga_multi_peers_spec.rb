@@ -33,12 +33,12 @@ describe 'quagga class multi peers' do
           'addr4' => ['#{router2_ip}'],
           'addr6' => ['#{router2_ip6}'],
           'desc'  => 'TEST Network'
-          }
+          },
         '#{router3_asn}' => {
           'addr4' => ['#{router3_ip}'],
           'addr6' => ['#{router3_ip6}'],
           'desc'  => 'TEST Network'
-          }
+          },
       }
     }
     EOF
@@ -99,7 +99,13 @@ describe 'quagga class multi peers' do
     describe command("ping -c 1 #{router2_ip}") do 
       its(:exit_status) { should eq 0 }
     end
+    describe command("ping -c 1 #{router3_ip}") do 
+      its(:exit_status) { should eq 0 }
+    end
     describe command("ping6 -I eth0 -c 1 #{router2_ip6}") do 
+      its(:exit_status) { should eq 0 }
+    end
+    describe command("ping6 -I eth0 -c 1 #{router3_ip6}") do 
       its(:exit_status) { should eq 0 }
     end
     describe command('vtysh -c \'show ip bgp sum\'') do
@@ -122,7 +128,7 @@ describe 'quagga class multi peers' do
       its(:stdout) { should match(/#{router2_ip6}\s+4\s+#{router2_asn}/i) }
     end
     describe command('vtysh -c \'show ipv6 bgp sum\'') do
-      its(:stdout) { should match(/#{router3_ip6}\s+4\s+#{router2_asn}/i) }
+      its(:stdout) { should match(/#{router3_ip6}\s+4\s+#{router3_asn}/i) }
     end
     describe command("vtysh -c \'show ip bgp neighbors #{router2_ip6}\'") do
       its(:stdout) { should match(/BGP state = Established/) }
