@@ -38,6 +38,10 @@ describe 'quagga::bgpd' do
             "password"       => "password",
             "prepend"        => 3,
         },
+        '64498' => {
+            "addr4"          => ["192.0.2.2"],
+            "desc"           => "TEST 2 Network",
+        },
       },
     }
   end
@@ -59,6 +63,7 @@ describe 'quagga::bgpd' do
 
         it { is_expected.to contain_class('Quagga') }
         it { is_expected.to contain_quagga__bgpd__peer('64497') }
+        it { is_expected.to contain_quagga__bgpd__peer('64498') }
         it do
           is_expected.to contain_concat('/etc/quagga/bgpd.conf')
             .with(
