@@ -76,7 +76,7 @@ describe 'quagga::bgpd::peer' do
             )
         end
         it do
-          is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+          is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -313,7 +313,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -342,7 +342,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -369,7 +369,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -398,8 +398,8 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
-              .with(
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
+            .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
             ).with_content(
@@ -434,7 +434,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -472,7 +472,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -508,7 +508,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -546,7 +546,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
               .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -633,7 +633,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
@@ -667,7 +667,7 @@ describe 'quagga::bgpd::peer' do
             )
           end
           it do
-            is_expected.to contain_concat__fragment('quagga_bgpd_routemap')
+            is_expected.to contain_concat__fragment('quagga_bgpd_routemap_64497')
             .with(
               'order'   => '90',
               'target'  => '/etc/quagga/bgpd.conf'
