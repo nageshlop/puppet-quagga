@@ -10,6 +10,7 @@ route-map outbound-<%= @name %> permit 10
   <%- if @prepend -%>
   set as-path prepend<%= " #{@my_asn}" * @prepend.to_i %>
   <%- end -%>
+route-map outbound-<%= @name %> permit 20
 !
 route-map outbound-<%= @name %>-v6 permit 10
   match ipv6 address prefix-list specific-v6
@@ -19,5 +20,6 @@ route-map outbound-<%= @name %>-v6 permit 10
   <%- if @prepend -%>
   set as-path prepend<%= " #{@my_asn}" * @prepend.to_i %>
   <%- end -%>
+route-map outbound-<%= @name %>-v6 permit 20
 <%- end -%>
 !
