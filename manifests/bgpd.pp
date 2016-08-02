@@ -14,11 +14,24 @@ class quagga::bgpd (
   $enable_advertisements_v6 = true,
   $manage_nagios            = false,
   $conf_file                = '/etc/quagga/bgpd.conf',
+  $log_stdout               = false,
+  $log_stdout_level         = 'debugging',
+  $log_file                 = false,
+  $log_file_path            = '/var/log/quagga/bgpd.log',
+  $log_file_level           = 'debugging',
+  $log_syslog               = false,
+  $log_syslog_level         = 'debugging',
+  $log_syslog_facility      = 'daemon',
+  $log_monitor              = false,
+  $log_monitor_level        = 'debugging',
+  $log_record_priority      = false,
+  $log_timestamp_precision  = 1,
   $peers                    = {},
 ) {
 
   include quagga
 
+  $log_levels = '^(emergencies|alerts|critical|errors|warnings|notifications|informational|debugging)$'
   validate_integer($my_asn)
   validate_ip_address($router_id)
   validate_bool($enable)
@@ -32,6 +45,18 @@ class quagga::bgpd (
   validate_bool($enable_advertisements_v6)
   validate_bool($manage_nagios)
   validate_absolute_path($conf_file)
+  validate_bool($log_stdout)
+  validate_re($log_stdout_level, $log_levels)
+  validate_bool($log_file)
+  validate_absolute_path($log_file_path)
+  validate_re($log_file_level, $log_levels)
+  validate_bool($log_syslog)
+  validate_re($log_syslog_level, $log_levels)
+  validate_string($log_syslog_facility)
+  validate_bool($log_monitor)
+  validate_re($log_monitor_level, $log_levels)
+  validate_bool($log_record_priority)
+  validate_integer($log_timestamp_precision,6)
   validate_hash($peers)
 
   Ini_setting {

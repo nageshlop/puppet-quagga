@@ -77,6 +77,18 @@ describe 'quagga::bgpd' do
           'order'   => '01',
           'target'  => '/etc/quagga/bgpd.conf'
         ).with_content(
+          /no log stdout/
+        ).with_content(
+          /no log file/
+        ).with_content(
+          /no log syslog/
+        ).with_content(
+          /no log monitor/
+        ).with_content(
+          /no log record-priority/
+        ).with_content(
+          /log timestamp precision 1/
+        ).with_content(
           /router bgp 64496/
         ).with_content(
           /bgp router-id 192.0.2.1/
@@ -373,6 +385,180 @@ describe 'quagga::bgpd' do
               )
           end
         end
+        context 'log_stdout' do
+          before { params.merge!(log_stdout: true) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log stdout debugging/
+            )
+          end
+        end
+        context 'log_stdout_level' do
+          before { params.merge!(
+            log_stdout: true, 
+            log_stdout_level: 'alerts') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log stdout alerts/
+            )
+          end
+        end
+        context 'log_file' do
+          before { params.merge!(log_file: true) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log file \/var\/log\/quagga\/bgpd.log debugging/
+            )
+          end
+        end
+        context 'log_file_level' do
+          before { params.merge!(
+            log_file: true, 
+            log_file_level: 'alerts') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log file \/var\/log\/quagga\/bgpd.log alerts/
+            )
+          end
+        end
+        context 'log_file_path' do
+          before { params.merge!(
+            log_file: true, 
+            log_file_path: '/bgpd.log') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log file \/bgpd.log debugging/
+            )
+          end
+        end
+        context 'log_syslog' do
+          before { params.merge!(log_syslog: true) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log syslog debugging/
+            ).with_content(
+              /^log facility daemon/
+            )
+          end
+        end
+        context 'log_syslog_level' do
+          before { params.merge!(
+            log_syslog: true, 
+            log_syslog_level: 'alerts') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log syslog alerts/
+            ).with_content(
+              /^log facility daemon/
+            )
+          end
+        end
+        context 'log_syslog_facility' do
+          before { params.merge!(
+            log_syslog: true, 
+            log_syslog_facility: 'foobar') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log syslog debugging/
+            ).with_content(
+              /^log facility foobar/
+            )
+          end
+        end
+        context 'log_monitor' do
+          before { params.merge!(log_monitor: true) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log monitor debugging/
+            )
+          end
+        end
+        context 'log_monitor_level' do
+          before { params.merge!(
+            log_monitor: true, 
+            log_monitor_level: 'alerts') }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log monitor alerts/
+            )
+          end
+        end
+        context 'log_record_priority' do
+          before { params.merge!(log_record_priority: true) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log record-priority/
+            )
+          end
+        end
+        context 'log_timestamp_precision' do
+          before { params.merge!(log_timestamp_precision: 3) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^log timestamp precision 3/
+            )
+          end
+        end
         context 'disable' do
           before { params.merge!(enable: false) }
           it { is_expected.to compile }
@@ -434,6 +620,74 @@ describe 'quagga::bgpd' do
         end
         context 'conf_file' do
           before { params.merge!(conf_file: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_stdout' do
+          before { params.merge!(log_stdout: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_stdout_level' do
+          before { params.merge!(log_stdout_level: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_stdout_level bad level' do
+          before { params.merge!(log_stdout_level: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_file' do
+          before { params.merge!(log_file: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_file_path' do
+          before { params.merge!(log_file_path: true) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_file_level' do
+          before { params.merge!(log_file_level: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_file_level bad level' do
+          before { params.merge!(log_file_level: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_syslog' do
+          before { params.merge!(log_syslog: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_syslog_facility' do
+          before { params.merge!(log_syslog_facility: true) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_syslog_level' do
+          before { params.merge!(log_syslog_level: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_syslog_level bad level' do
+          before { params.merge!(log_syslog_level: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_monitor' do
+          before { params.merge!(log_monitor: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_monitor_level' do
+          before { params.merge!(log_monitor_level: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_monitor_level bad level' do
+          before { params.merge!(log_monitor_level: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_record_priority' do
+          before { params.merge!(log_record_priority: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_timestamp_precision' do
+          before { params.merge!(log_timestamp_precision: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'log_timestamp_precision big int' do
+          before { params.merge!(log_timestamp_precision: 7) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'peers' do

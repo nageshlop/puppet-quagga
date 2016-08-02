@@ -168,6 +168,19 @@ class { '::quagga::bgpd':
 * `enable_advertisements_v6` (Bool, Default: true): If this is set to false then no IPv6 networks, including the failsafe IPv6 networks, will be advertised.
 * `manage_nagios` (Bool, Default: false): If this is set to true the policy will create vertual resources to check each peer neighbor'
 * `conf_file` (Absolute file path, Default: '/etc/quagga/bgpd.conf'): The fully qualified path to the managed config file
+> Valid Logging levels: ^(emergencies|alerts|critical|errors|warnings|notifications|informational|debugging)$
+* `log_stdout` (Bool, Default: false): if set to true enable logging to stdout
+* `log_stdout_level` (Valid Logging level, Default: debugging): The logging level for stdout logging 
+* `log_file` (Bool, Default: false): if set to true enable logging to file
+* `log_file_path` (Valid path, Default: /var/log/quagga/bgpd.log): The path for file logging
+* `log_file_level` (Valid Logging level, Default: debugging): The logging level for file logging 
+* `log_syslog` (Bool, Default: false): if set to true enable logging to syslog
+* `log_syslog_facility` (String, Default: 'daemon') The syslog facilty to use
+* `log_syslog_level` (Valid Logging level, Default: debugging): The logging level for syslog logging 
+* `log_monitor` (Bool, Default: false): if set to true enable logging to monitor
+* `log_monitor_level` (Valid Logging level, Default: debugging): The logging level for monitor logging 
+* `log_record_priority` (Bool, Default: false): If true log the severity in all messages logged to a file, to stdout, or to a terminal monitor (i.e. anything except syslog)
+* `log_timestamp_precision` (Integer <=6, Default: 1): This sets the precision of log message timestamps to the given number of digits after the decimal point.
 * `peers` (Hash, Default: {}): A hash of peers to be used with create_resources(quagga::bgpd::peer, $peers)
 
 ### Private Classes
