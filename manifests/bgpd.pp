@@ -14,6 +14,7 @@ class quagga::bgpd (
   $enable_advertisements_v6 = true,
   $manage_nagios            = false,
   $conf_file                = '/etc/quagga/bgpd.conf',
+  $debug_bgp                = [],
   $log_stdout               = false,
   $log_stdout_level         = 'debugging',
   $log_file                 = false,
@@ -45,6 +46,7 @@ class quagga::bgpd (
   validate_bool($enable_advertisements_v6)
   validate_bool($manage_nagios)
   validate_absolute_path($conf_file)
+  validate_array($debug_bgp)
   validate_bool($log_stdout)
   validate_re($log_stdout_level, $log_levels)
   validate_bool($log_file)

@@ -385,6 +385,21 @@ describe 'quagga::bgpd' do
               )
           end
         end
+        context 'debug_bgp' do
+          before { params.merge!(debug_bgp: ['as4', 'events'] ) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_concat__fragment('quagga_bgpd_head')
+              .with(
+            'order'   => '01',
+            'target'  => '/etc/quagga/bgpd.conf'
+            ).with_content(
+              /^debug bgp as4/
+            ).with_content(
+              /^debug bgp events/
+            )
+          end
+        end
         context 'log_stdout' do
           before { params.merge!(log_stdout: true) }
           it { is_expected.to compile }
@@ -620,6 +635,18 @@ describe 'quagga::bgpd' do
         end
         context 'conf_file' do
           before { params.merge!(conf_file: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'debug_bgp' do
+          before { params.merge!(conf_file: false) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'debug_bgp bad entry' do
+          before { params.merge!(conf_file: ['foobar'] ) }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'debug_bgp bad entry with valid entry' do
+          before { params.merge!(conf_file: ['as4', 'foobar'] ) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'log_stdout' do

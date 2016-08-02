@@ -168,7 +168,13 @@ class { '::quagga::bgpd':
 * `enable_advertisements_v6` (Bool, Default: true): If this is set to false then no IPv6 networks, including the failsafe IPv6 networks, will be advertised.
 * `manage_nagios` (Bool, Default: false): If this is set to true the policy will create vertual resources to check each peer neighbor'
 * `conf_file` (Absolute file path, Default: '/etc/quagga/bgpd.conf'): The fully qualified path to the managed config file
-> Valid Logging levels: ^(emergencies|alerts|critical|errors|warnings|notifications|informational|debugging)$
+
+> Valid Debug Options as4, events, filters, fsm, keepalives, updates, zebra
+
+* `debug_bgp` (Array of Valid OptionsEvents, Default: []): Enable BGP debugging foreach option in te array
+
+> Valid Logging levels: emergencies, alerts, critical, errors, warnings, notifications, informational, debugging
+
 * `log_stdout` (Bool, Default: false): if set to true enable logging to stdout
 * `log_stdout_level` (Valid Logging level, Default: debugging): The logging level for stdout logging 
 * `log_file` (Bool, Default: false): if set to true enable logging to file

@@ -30,7 +30,14 @@ log record-priority
 no log record-priority
 <%- end -%>
 log timestamp precision <%= @log_timestamp_precision %>
-
+<%- @debug_bgp.each do |debug| 
+  @valid_entries = ['as4', 'events', 'filters', 'fsm', 'keepalives', 
+      'updates', 'zebra']
+  if ! @valid_entries.include? debug then
+    raise Puppet::Error, "debug_bgp only supports #{@valid_entries.join(' ')}"
+  end -%>
+debug bgp <%= debug %>
+<%- end -%>
 router bgp <%= @my_asn %>
 !
  bgp router-id <%= @router_id %>
