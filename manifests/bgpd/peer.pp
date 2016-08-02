@@ -21,7 +21,7 @@ define quagga::bgpd::peer (
   if $prepend { validate_integer($prepend) }
   validate_bool($default_originate)
   $my_asn = $::quagga::bgpd::my_asn
-  
+
   if count($addr4) > 0 or count($addr6) > 0 {
     concat::fragment{"bgpd_peer_${name}":
       target  => $::quagga::bgpd::conf_file,
