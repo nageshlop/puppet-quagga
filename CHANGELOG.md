@@ -1,3 +1,6 @@
+## 2016-08-02 0.3.0
+* add support to control logging
+
 ## 2016-05-20 0.2.4
 * Fix bug which prevented failover networks from been advertised
 * add beaker tests for disable_advertisment, failover networks and failsafe_server
