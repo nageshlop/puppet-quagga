@@ -471,6 +471,59 @@ describe 'quagga::bgpd' do
             )
           end
         end
+        context 'log_file logrotate' do
+          before { params.merge!(
+            log_file: true,
+            logrotate_enable: true,
+          ) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_logrotate__rule('quagga_bgp')
+              .with(
+                'path'       => '/var/log/quagga/bgpd.log',
+                'rotate'     => 5,
+                'size'       => '100M',
+                'compress'   => true,
+                'postrotate' => '/bin/kill -USR1 `cat /var/run/quagga/bgpd.pid 2> /dev/null` 2> /dev/null || true',
+            )
+          end
+        end
+        context 'log_file logrotate rotate' do
+          before { params.merge!(
+            log_file: true,
+            logrotate_enable: true,
+            logrotate_rotate: 10,
+          ) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_logrotate__rule('quagga_bgp')
+              .with(
+                'path'       => '/var/log/quagga/bgpd.log',
+                'rotate'     => 10,
+                'size'       => '100M',
+                'compress'   => true,
+                'postrotate' => '/bin/kill -USR1 `cat /var/run/quagga/bgpd.pid 2> /dev/null` 2> /dev/null || true',
+            )
+          end
+        end
+        context 'log_file logrotate' do
+          before { params.merge!(
+            log_file: true,
+            logrotate_enable: true,
+            logrotate_size: '500M',
+          ) }
+          it { is_expected.to compile }
+          it do
+            is_expected.to contain_logrotate__rule('quagga_bgp')
+              .with(
+                'path'       => '/var/log/quagga/bgpd.log',
+                'rotate'     => 5,
+                'size'       => '500M',
+                'compress'   => true,
+                'postrotate' => '/bin/kill -USR1 `cat /var/run/quagga/bgpd.pid 2> /dev/null` 2> /dev/null || true',
+            )
+          end
+        end
         context 'log_syslog' do
           before { params.merge!(log_syslog: true) }
           it { is_expected.to compile }
@@ -675,6 +728,18 @@ describe 'quagga::bgpd' do
         end
         context 'log_file_level bad level' do
           before { params.merge!(log_file_level: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'logrotate_enable' do
+          before { params.merge!(rotate_enable: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'logrotate_rotate' do
+          before { params.merge!(rotate_rotate: 'foobar') }
+          it { expect { subject.call }.to raise_error(Puppet::Error) }
+        end
+        context 'logrotate_size' do
+          before { params.merge!(rotate_size: true) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'log_syslog' do

@@ -180,6 +180,9 @@ class { '::quagga::bgpd':
 * `log_file` (Bool, Default: false): if set to true enable logging to file
 * `log_file_path` (Valid path, Default: /var/log/quagga/bgpd.log): The path for file logging
 * `log_file_level` (Valid Logging level, Default: debugging): The logging level for file logging 
+* `logrotate_enable`: (Bool, Default: false): enable logrotate rules.  Only valid of log_file is also true
+* `logrotate_rotate` (Integer, Default: 5): The number of rotated log files to keep on disk.
+* `logrotate_size` (String, Default: 100M): The String size a log file has to reach before it will be rotated.  The default units are bytes, append k, M or G for kilobytes, megabytes or gigabytes respectively.
 * `log_syslog` (Bool, Default: false): if set to true enable logging to syslog
 * `log_syslog_facility` (String, Default: 'daemon') The syslog facilty to use
 * `log_syslog_level` (Valid Logging level, Default: debugging): The logging level for syslog logging 

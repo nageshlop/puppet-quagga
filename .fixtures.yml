@@ -8,5 +8,7 @@ fixtures:
         repo: https://github.com/puppetlabs/puppetlabs-concat
       inifile:
         repo: https://github.com/puppetlabs/puppetlabs-inifile
+      logrotate:
+        repo: https://github.com/yo61/puppet-logrotate
     forge_modules:
 

@@ -20,6 +20,9 @@ class quagga::bgpd (
   $log_file                 = false,
   $log_file_path            = '/var/log/quagga/bgpd.log',
   $log_file_level           = 'debugging',
+  $logrotate_enable         = false,
+  $logrotate_rotate         = 5,
+  $logrotate_size           = '100M',
   $log_syslog               = false,
   $log_syslog_level         = 'debugging',
   $log_syslog_facility      = 'daemon',
@@ -52,6 +55,9 @@ class quagga::bgpd (
   validate_bool($log_file)
   validate_absolute_path($log_file_path)
   validate_re($log_file_level, $log_levels)
+  validate_bool($logrotate_enable)
+  validate_integer($logrotate_rotate)
+  validate_string($logrotate_size)
   validate_bool($log_syslog)
   validate_re($log_syslog_level, $log_levels)
   validate_string($log_syslog_facility)
@@ -105,6 +111,15 @@ class quagga::bgpd (
     target  => $conf_file,
     content => "line vty\n!\n",
     order   => '99',
+  }
+  if $log_file and $logrotate_enable {
+    logrotate::rule {'quagga_bgp':
+      path       => $log_file_path,
+      rotate     => $logrotate_rotate,
+      size       => $logrotate_size,
+      compress   => true,
+      postrotate => '/bin/kill -USR1 `cat /var/run/quagga/bgpd.pid 2> /dev/null` 2> /dev/null || true',
+    }
   }
   create_resources(quagga::bgpd::peer, $peers)
 }
