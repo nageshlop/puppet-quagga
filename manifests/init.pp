@@ -27,7 +27,7 @@ class quagga (
   }
   file {'/etc/profile.d/vtysh.sh':
     ensure => present,
-    source => 'puppet:///modules/quagga/vtysh.sh'
+    source => 'puppet:///modules/quagga/vtysh.sh',
   }
 
   service { 'quagga':
@@ -36,8 +36,10 @@ class quagga (
     hasstatus => false,
     status    => '/usr/local/bin/quagga_status.sh',
     start     => '/etc/init.d/quagga restart',
-    require   => [Package[ $package ],
-      File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh'] ]
+    require   => [
+      Package[ $package ],
+      File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh']
+      ],
   }
   Ini_setting {
     ensure  => present,

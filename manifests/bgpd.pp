@@ -33,7 +33,7 @@ class quagga::bgpd (
   Hash                            $peers                    = {},
 ) {
 
-  include quagga
+  include ::quagga
 
   Ini_setting {
     path    => '/etc/quagga/daemons',
