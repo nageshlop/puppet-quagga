@@ -1,11 +1,11 @@
 fixtures:
     symlinks:
-      puppet-quagga: "#{source_dir}"
+      quagga: "#{source_dir}"
     repositories:
       stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
       concat: https://github.com/puppetlabs/puppetlabs-concat
       inifile: https://github.com/puppetlabs/puppetlabs-inifile
-      logrotate: https://github.com/yo61/puppet-logrotate
+      logrotate: https://github.com/voxpupuli/puppet-logrotate
       tea: https://github.com/icann-dns/puppet-tea.git
     forge_modules:
 
