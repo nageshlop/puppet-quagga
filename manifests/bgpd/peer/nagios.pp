@@ -1,9 +1,8 @@
 # quagga::bgpd::peer::nagios
 # 
 define quagga::bgpd::peer::nagios (
-  $routes = []
+  Array $routes = []
 ) {
-  validate_array($routes)
   $_routes = join($routes, ' ')
   @@nagios_service{ "${::fqdn}_BGP_NEIGHBOUR_${name}":
     ensure              => present,

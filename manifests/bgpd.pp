@@ -1,71 +1,39 @@
 # Class: quagga::bgpd
 #
 class quagga::bgpd (
-  $my_asn                   = undef,
-  $router_id                = undef,
-  $enable                   = true,
-  $networks4                = [],
-  $failsafe_networks4       = [],
-  $networks6                = [],
-  $failsafe_networks6       = [],
-  $failover_server          = false,
-  $enable_advertisements    = true,
-  $enable_advertisements_v4 = true,
-  $enable_advertisements_v6 = true,
-  $manage_nagios            = false,
-  $conf_file                = '/etc/quagga/bgpd.conf',
-  $debug_bgp                = [],
-  $log_stdout               = false,
-  $log_stdout_level         = 'debugging',
-  $log_file                 = false,
-  $log_file_path            = '/var/log/quagga/bgpd.log',
-  $log_file_level           = 'debugging',
-  $logrotate_enable         = false,
-  $logrotate_rotate         = 5,
-  $logrotate_size           = '100M',
-  $log_syslog               = false,
-  $log_syslog_level         = 'debugging',
-  $log_syslog_facility      = 'daemon',
-  $log_monitor              = false,
-  $log_monitor_level        = 'debugging',
-  $log_record_priority      = false,
-  $log_timestamp_precision  = 1,
-  $peers                    = {},
+  Integer[1,4294967295]           $my_asn                   = undef,
+  Tea::Ipv4                       $router_id                = undef,
+  Boolean                         $enable                   = true,
+  Optional[Array[Tea::Ipv4_cidr]] $networks4                = [],
+  Optional[Array[Tea::Ipv4_cidr]] $failsafe_networks4       = [],
+  Optional[Array[Tea::Ipv6_cidr]] $networks6                = [],
+  Optional[Array[Tea::Ipv6_cidr]] $failsafe_networks6       = [],
+  Boolean                         $failover_server          = false,
+  Boolean                         $enable_advertisements    = true,
+  Boolean                         $enable_advertisements_v4 = true,
+  Boolean                         $enable_advertisements_v6 = true,
+  Boolean                         $manage_nagios            = false,
+  Stdlib::Absolutepath            $conf_file                = '/etc/quagga/bgpd.conf',
+  Optional[Array]                 $debug_bgp                = [],
+  Boolean                         $log_stdout               = false,
+  Quagga::Log_level               $log_stdout_level         = 'debugging',
+  Boolean                         $log_file                 = false,
+  Stdlib::Absolutepath            $log_file_path            = '/var/log/quagga/bgpd.log',
+  Quagga::Log_level               $log_file_level           = 'debugging',
+  Boolean                         $logrotate_enable         = false,
+  Integer[1,100]                  $logrotate_rotate         = 5,
+  String                          $logrotate_size           = '100M',
+  Boolean                         $log_syslog               = false,
+  Quagga::Log_level               $log_syslog_level         = 'debugging',
+  Tea::Syslogfacility             $log_syslog_facility      = 'daemon',
+  Boolean                         $log_monitor              = false,
+  Quagga::Log_level               $log_monitor_level        = 'debugging',
+  Boolean                         $log_record_priority      = false,
+  Integer[0,6]                    $log_timestamp_precision  = 1,
+  Hash                            $peers                    = {},
 ) {
 
   include quagga
-
-  $log_levels = '^(emergencies|alerts|critical|errors|warnings|notifications|informational|debugging)$'
-  validate_integer($my_asn)
-  validate_ip_address($router_id)
-  validate_bool($enable)
-  validate_array($networks4)
-  validate_array($failsafe_networks4)
-  validate_array($networks6)
-  validate_array($failsafe_networks6)
-  validate_bool($failover_server)
-  validate_bool($enable_advertisements)
-  validate_bool($enable_advertisements_v4)
-  validate_bool($enable_advertisements_v6)
-  validate_bool($manage_nagios)
-  validate_absolute_path($conf_file)
-  validate_array($debug_bgp)
-  validate_bool($log_stdout)
-  validate_re($log_stdout_level, $log_levels)
-  validate_bool($log_file)
-  validate_absolute_path($log_file_path)
-  validate_re($log_file_level, $log_levels)
-  validate_bool($logrotate_enable)
-  validate_integer($logrotate_rotate)
-  validate_string($logrotate_size)
-  validate_bool($log_syslog)
-  validate_re($log_syslog_level, $log_levels)
-  validate_string($log_syslog_facility)
-  validate_bool($log_monitor)
-  validate_re($log_monitor_level, $log_levels)
-  validate_bool($log_record_priority)
-  validate_integer($log_timestamp_precision,6)
-  validate_hash($peers)
 
   Ini_setting {
     path    => '/etc/quagga/daemons',

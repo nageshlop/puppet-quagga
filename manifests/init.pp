@@ -2,19 +2,13 @@
 #
 # Quagga routing server.
 class quagga (
-  $owner        = 'quagga',
-  $group        = 'quagga',
-  $mode         = '0664',
-  $package      = 'quagga',
-  $enable       = true,
-  $content      = $::quagga::params::content,
+  String          $owner   = 'quagga',
+  String          $group   = 'quagga',
+  Regexp[/^\d+$/] $mode    = '0664',
+  String          $package = 'quagga',
+  Boolean         $enable  = true,
+  String          $content = $::quagga::params::content,
 ) inherits ::quagga::params {
-  validate_string($owner)
-  validate_string($group)
-  validate_re($mode, '^\d+$')
-  validate_string($package)
-  validate_bool($enable)
-  validate_string($content)
 
   ensure_packages([$package])
   file { '/etc/quagga/zebra.conf':
