@@ -13,6 +13,8 @@ describe 'quagga class prepend router' do
   router2_asn = '64497'
   ipv6_network = '2001:db8:1::/64'
   ipv4_network = router1_ip.sub(%r{\d+$}, '0/24')
+  on(router1, 'sysctl net.ipv6.conf.all.disable_ipv6=0')
+  on(router2, 'sysctl net.ipv6.conf.all.disable_ipv6=0')
   on(router1, "ip -6 addr add #{router1_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   on(router2, "ip -6 addr add #{router2_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   context 'basic' do

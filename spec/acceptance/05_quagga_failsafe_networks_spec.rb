@@ -15,6 +15,8 @@ describe 'quagga class failsafe networks router' do
   ipv4_network          = '10.0.0.0/24'
   ipv6_failsafe_network = '2001:db8::/32'
   ipv4_failsafe_network = '10.0.0.0/23'
+  on(router1, 'sysctl net.ipv6.conf.all.disable_ipv6=0')
+  on(router2, 'sysctl net.ipv6.conf.all.disable_ipv6=0')
   on(router1, "ip -6 addr add #{router1_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   on(router2, "ip -6 addr add #{router2_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   context 'basic' do

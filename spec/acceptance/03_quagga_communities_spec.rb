@@ -15,6 +15,8 @@ describe 'quagga class communities router' do
   ipv4_network = router1_ip.sub(%r{\d+$}, '0/24')
   additional_v4_network =  '192.0.2.0/24'
   additional_v6_network =  '2001:db8:2::/48'
+  on(router1, 'sysctl net.ipv6.conf.all.disable_ipv6=0')
+  on(router2, 'sysctl net.ipv6.conf.all.disable_ipv6=0')
   on(router1, "ip -6 addr add #{router1_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   on(router2, "ip -6 addr add #{router2_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   context 'basic' do
