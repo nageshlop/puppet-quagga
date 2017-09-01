@@ -2,19 +2,17 @@
 
 require 'spec_helper_acceptance'
 
-describe 'quagga failover server' do
+describe 'quagga class multi router' do
   router1 = find_host_with_role(:router1)
   router2 = find_host_with_role(:router2)
   router1_ip = fact_on(router1, 'ipaddress')
   router1_ip6 = '2001:db8:1::1'
-  router1_asn = 64_496
+  router1_asn = '64496'
   router2_ip = fact_on(router2, 'ipaddress')
   router2_ip6 = '2001:db8:1::2'
-  router2_asn = 64_497
-  ipv6_network          = '2001:db8:2::/48'
-  ipv4_network          = '10.0.0.0/24'
-  ipv6_failsafe_network = '2001:db8::/32'
-  ipv4_failsafe_network = '10.0.0.0/23'
+  router2_asn = '64497'
+  ipv6_network = '2001:db8:1::/64'
+  ipv4_network = router1_ip.sub(%r{\d+$}, '0/24')
   on(router1, "ip -6 addr add #{router1_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   on(router2, "ip -6 addr add #{router2_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])
   context 'basic' do
@@ -23,6 +21,8 @@ describe 'quagga failover server' do
     class { '::quagga::bgpd':
       my_asn => #{router1_asn},
       router_id => '#{router1_ip}',
+      networks4 => [ '#{ipv4_network}'],
+      networks6 => [ '#{ipv6_network}'],
       peers => {
         '#{router2_asn}' => {
           'addr4' => ['#{router2_ip}'],
@@ -39,9 +39,6 @@ describe 'quagga failover server' do
       router_id => '#{router2_ip}',
       networks4 => [ '#{ipv4_network}'],
       networks6 => [ '#{ipv6_network}'],
-      failsafe_networks4 => [ '#{ipv4_failsafe_network}' ],
-      failsafe_networks6 => [ '#{ipv6_failsafe_network}' ],
-      failover_server    => true,
       peers => {
         '#{router1_asn}' => {
           'addr4' => ['#{router1_ip}'],
@@ -88,9 +85,8 @@ describe 'quagga failover server' do
     describe command("vtysh -c \'show ip bgp neighbors #{router2_ip}\'") do
       its(:stdout) { is_expected.to match(%r{BGP state = Established}) }
     end
-    describe command("vtysh -c \'show ip bgp neighbors #{router2_ip} received-routes\'") do
-      its(:stdout) { is_expected.not_to match(%r{#{ipv4_network}\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}\s+i}) }
-      its(:stdout) { is_expected.to match(%r{#{ipv4_failsafe_network}\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}\s+i}) }
+    describe command("vtysh -c \'show ip bgp neighbors #{router2_ip} advertised-routes\'") do
+      its(:stdout) { is_expected.to match(%r{#{ipv4_network}\s+#{router1_ip}\s+0\s+32768\s+i}) }
     end
     describe command('vtysh -c \'show ipv6 bgp sum\'') do
       its(:stdout) { is_expected.to match(%r{#{router2_ip6}\s+4\s+#{router2_asn}}i) }
@@ -98,9 +94,8 @@ describe 'quagga failover server' do
     describe command("vtysh -c \'show ip bgp neighbors #{router2_ip6}\'") do
       its(:stdout) { is_expected.to match(%r{BGP state = Established}) }
     end
-    describe command("vtysh -c \'show ipv6 bgp neighbors #{router2_ip6} received-routes\'") do
-      its(:stdout) { is_expected.not_to match(%r{#{ipv6_network}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}\s+i}) }
-      its(:stdout) { is_expected.to match(%r{#{ipv6_failsafe_network}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}\s+i}) }
+    describe command("vtysh -c \'show ipv6 bgp neighbors #{router2_ip6} advertised-routes\'") do
+      its(:stdout) { is_expected.to match(%r{#{ipv6_network}\s+#{router1_ip6}\s+0\s+32768\s+i}) }
     end
   end
 end

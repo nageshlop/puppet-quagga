@@ -8,13 +8,13 @@ describe 'quagga class multi peers' do
   router3 = find_host_with_role(:router3)
   router1_ip = fact_on(router1, 'ipaddress')
   router1_ip6 = '2001:db8:1::1'
-  router1_asn = 64_496
+  router1_asn = '64496'
   router2_ip = fact_on(router2, 'ipaddress')
   router2_ip6 = '2001:db8:1::2'
-  router2_asn = 64_497
+  router2_asn = '64497'
   router3_ip = fact_on(router3, 'ipaddress')
   router3_ip6 = '2001:db8:1::3'
-  router3_asn = 64_498
+  router3_asn = '64498'
   ipv6_network = '2001:db8:1::/64'
   ipv4_network = '10.0.0.0/24'
   on(router1, "ip -6 addr add #{router1_ip6}/64 dev eth0", acceptable_exit_codes: [0, 2])

@@ -19,11 +19,11 @@ describe 'quagga class' do
     pp = <<-EOF
     class { '::quagga': }
     class { '::quagga::bgpd':
-      my_asn => 64_496,
+      my_asn => 64496,
       router_id => '192.0.2.1',
       networks4 => [ '192.0.2.0/24'],
       peers => {
-        '64_497' => {
+        '64497' => {
           'addr4' => ['192.0.2.2'],
           'desc'  => 'TEST Network'
           }
@@ -57,11 +57,11 @@ describe 'quagga class' do
     pp = <<-EOF
     class { '::quagga': }
     class { '::quagga::bgpd':
-      my_asn => 64_496,
+      my_asn => 64496,
       router_id => '192.0.2.1',
       networks6 => [ '2001:DB8::/48'],
       peers => {
-        '64_497' => {
+        '64497' => {
           'addr6' => ['2001:DB8::2'],
           'desc'  => 'TEST Network'
           }
@@ -95,12 +95,12 @@ describe 'quagga class' do
     pp = <<-EOF
     class { '::quagga': }
     class { '::quagga::bgpd':
-      my_asn => 64_496,
+      my_asn => 64496,
       router_id => '192.0.2.1',
       networks4 => [ '192.0.2.0/24'],
       networks6 => [ '2001:DB8::/48'],
       peers => {
-        '64_497' => {
+        '64497' => {
           'addr4' => ['192.0.2.2'],
           'addr6' => ['2001:DB8::2'],
           'desc'  => 'TEST Network'

@@ -7,10 +7,10 @@ describe 'quagga class ACLs ' do
   router2 = find_host_with_role(:router2)
   router1_ip = fact_on(router1, 'ipaddress')
   router1_ip6 = '2001:db8:1::1'
-  router1_asn = 64_496
+  router1_asn = '64496'
   router2_ip = fact_on(router2, 'ipaddress')
   router2_ip6 = '2001:db8:1::2'
-  router2_asn = 64_497
+  router2_asn = '64497'
   ipv6_network = '2001:db8:1::/64'
   ipv4_network = router1_ip.sub(%r{\d+$}, '0/24')
   additional_v4_network =  '192.0.2.0/24'

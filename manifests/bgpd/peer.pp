@@ -5,15 +5,20 @@ define quagga::bgpd::peer (
   Optional[Array[Stdlib::Compat::Ipv6]] $addr6             = [],
   String                                $desc              = undef,
   Quagga::Routes_acl                    $inbound_routes    = 'none',
-  Array[Tea::Ipv4_cidr]                 $rejected_v4       = [],
-  Array[Tea::Ipv6_cidr]                 $rejected_v6       = [],
+  Optional[Array[Tea::Ipv4_cidr]]       $rejected_v4       = [],
+  Optional[Array[Tea::Ipv6_cidr]]       $rejected_v6       = [],
   Optional[Array]                       $communities       = [],
   Optional[Integer[1,254]]              $multihop          = undef,
   Optional[String]                      $password          = undef,
   Optional[Integer[1,32]]               $prepend           = undef,
   Boolean                               $default_originate = false,
 ) {
-  $my_asn = $::quagga::bgpd::my_asn
+
+  include ::quagga::bgpd
+
+  $my_asn             = $::quagga::bgpd::my_asn
+  $global_rejected_v4 = $::quagga::bgpd::rejected_v4
+  $global_rejected_v6 = $::quagga::bgpd::rejected_v6
 
   if count($addr4) > 0 or count($addr6) > 0 {
     concat::fragment{"bgpd_peer_${name}":
