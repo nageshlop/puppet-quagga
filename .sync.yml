@@ -1,7 +1,7 @@
 .travis.yml:
   docker_sets:
-  - set: 'docker/ubuntu-14.04'
+  - set: 'docker/ubuntu-multi-14.04'
     tesmode: apply
-  - set: 'docker/ubuntu-16.04'
+  - set: 'docker/ubuntu-multi-16.04'
     tesmode: apply
   secure: "i3GbhvO6IKOropO+kcn2moHJXa+mZNHH+O/xyKpJhJ45xEVSePv60rv2rWiS/qWi7Tc+8blQV4DdXDjzer9bhBibL1Lgmp7f2cv800PxyiJ4ISv8L1hqgM4wPbHYDjQZ7E99qC7J1JsSNl9jKoWJGyhQG8wqEuRmCHLd0HkfKXulCiZcKhK2ksDWmmyrNpy9vTO2FUzoY11/hyBVl2peTpTRwsc3kJ2xga0vijVo1SyjcgbYNIlDNbMlz7Ajbt/puQPa7vSnYDeRv9pp7zl12RHmvsEZQdUhxtXsYA1CW2vsUqASrKkYznvbAgSL7usRuPw9QhqcSI9INO9GMfqvxpyy3dhXTXqE5M/jMWPiC5fE4OhpxcnRwbE6l/AiNowKrAk8CZdNPP7UTLqMmwSh3akuvVuTXhuAHHL4QTOA4b6p6PMN12t8cZ5Sp99AW9giLShcqQSq+fuSykCKwMXTNATcLk/Gt90wJqfcOunJj7HxtqWJDcA0FgjmZfTd0FNzHn6c312aNkEnYLcHnRvA/Q7OP6jgJDhU6/bASHxvhTt5d2A+04qUtGHC/dvdD9esHI08L9TDPQ/KMATgLDR/FRO4xQtYsEajOgL6VBwOHJgjLZpchghg3H+wdYXkaSGw18kfZ50Zj53ennCLGVmp7Nru/24o1O7WFOp9UedTh8Q="
