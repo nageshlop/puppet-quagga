@@ -42,7 +42,7 @@ describe 'quagga class ACLs ' do
     class { '::quagga::bgpd':
       my_asn => #{router2_asn},
       router_id => '#{router2_ip}',
-      networks4 => [ 
+      networks4 => [
         '#{ipv4_network}',
         '#{additional_v4_network1}',
         '#{additional_v4_network2}',
@@ -144,12 +144,12 @@ describe 'quagga class ACLs ' do
       its(:stdout) do
         is_expected.to match(
           %r{192.0.2.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}}
-        ) 
+        )
       end
       its(:stdout) do
         is_expected.to match(
           %r{198.51.100.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}}
-        ) 
+        )
       end
       its(:stdout) { is_expected.not_to match(%r{0.0.0.0}) }
     end
@@ -198,7 +198,7 @@ describe 'quagga class ACLs ' do
       its(:stdout) do
         is_expected.to match(
           %r{198.51.100.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}}
-        ) 
+        )
       end
       its(:stdout) { is_expected.not_to match(%r{0.0.0.0}) }
     end
