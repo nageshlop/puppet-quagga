@@ -5,7 +5,7 @@ ip prefix-list deny seq 1 deny any
 !
 ip prefix-list deny-default-route seq 1 deny 0.0.0.0/0
 <%- @rejected_v4.each_with_index do |reject, index| -%>
-ip prefix-list deny-default-route seq <%= index + 1 %> deny <%= reject %>
+ip prefix-list deny-default-route seq <%= index + 2 %> deny <%= reject %>
 <%- end -%>
 ip prefix-list deny-default-route seq <%= @rejected_v4.length + 2 %> permit 0.0.0.0/0 le 24
 !
@@ -34,7 +34,7 @@ ipv6 prefix-list deny seq 1 deny any
 !
 ipv6 prefix-list deny-default-route seq 1 deny ::/0
 <%- @rejected_v6.each_with_index do |reject, index| -%>
-ipv6 prefix-list deny-default-route seq <%= index + 1 %> deny <%= reject %>
+ipv6 prefix-list deny-default-route seq <%= index + 2 %> deny <%= reject %>
 <%- end -%>
 ipv6 prefix-list deny-default-route seq <%= @rejected_v6.length + 2 %> permit ::/0 le 48
 !
