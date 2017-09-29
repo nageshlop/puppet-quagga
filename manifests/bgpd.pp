@@ -32,6 +32,7 @@ class quagga::bgpd (
   Quagga::Log_level               $log_monitor_level        = 'debugging',
   Boolean                         $log_record_priority      = false,
   Integer[0,6]                    $log_timestamp_precision  = 1,
+  Boolean                         $fib_update               = true,
   Hash                            $peers                    = {},
 ) {
 
