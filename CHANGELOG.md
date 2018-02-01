@@ -1,4 +1,7 @@
-## 2016-08-09 0.3.0
+## 2016-08-09 0.4.0
+* add support to reject recived prefixes
+
+## 2016-08-09 0.3.1
 * add support to control logging
 
 ## 2016-08-02 0.3.0
