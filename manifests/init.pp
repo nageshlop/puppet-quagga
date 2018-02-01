@@ -2,19 +2,13 @@
 #
 # Quagga routing server.
 class quagga (
-  $owner        = 'quagga',
-  $group        = 'quagga',
-  $mode         = '0664',
-  $package      = 'quagga',
-  $enable       = true,
-  $content      = $::quagga::params::content,
+  String           $owner   = 'quagga',
+  String           $group   = 'quagga',
+  Pattern[/^\d+$/] $mode    = '0664',
+  String           $package = 'quagga',
+  Boolean          $enable  = true,
+  String           $content = $::quagga::params::content,
 ) inherits ::quagga::params {
-  validate_string($owner)
-  validate_string($group)
-  validate_re($mode, '^\d+$')
-  validate_string($package)
-  validate_bool($enable)
-  validate_string($content)
 
   ensure_packages([$package])
   file { '/etc/quagga/zebra.conf':
@@ -33,7 +27,7 @@ class quagga (
   }
   file {'/etc/profile.d/vtysh.sh':
     ensure => present,
-    source => 'puppet:///modules/quagga/vtysh.sh'
+    source => 'puppet:///modules/quagga/vtysh.sh',
   }
 
   service { 'quagga':
@@ -42,8 +36,10 @@ class quagga (
     hasstatus => false,
     status    => '/usr/local/bin/quagga_status.sh',
     start     => '/etc/init.d/quagga restart',
-    require   => [Package[ $package ],
-      File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh'] ]
+    require   => [
+      Package[ $package ],
+      File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh']
+      ],
   }
   Ini_setting {
     ensure  => present,

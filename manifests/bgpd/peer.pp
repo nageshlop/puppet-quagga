@@ -1,26 +1,20 @@
 # quagga::bgpd::peer
 #
 define quagga::bgpd::peer (
-  $addr4             = [],
-  $addr6             = [],
-  $desc              = undef,
-  $inbound_routes    = 'none',
-  $communities       = [],
-  $multihop          = undef,
-  $password          = undef,
-  $prepend           = undef,
-  $default_originate = false,
+  Optional[Array[Stdlib::Compat::Ipv4]] $addr4             = [],
+  Optional[Array[Stdlib::Compat::Ipv6]] $addr6             = [],
+  String                                $desc              = undef,
+  Quagga::Routes_acl                    $inbound_routes    = 'none',
+  Optional[Array]                       $communities       = [],
+  Optional[Integer[1,254]]              $multihop          = undef,
+  Optional[String]                      $password          = undef,
+  Optional[Integer[1,32]]               $prepend           = undef,
+  Boolean                               $default_originate = false,
 ) {
-  validate_array($addr4)
-  validate_array($addr6)
-  validate_string($desc)
-  validate_re($inbound_routes, '^(all|none|default|v6default|v4default)$')
-  if $communities { validate_array($communities) }
-  if $multihop { validate_integer($multihop) }
-  if $password { validate_string($password) }
-  if $prepend { validate_integer($prepend) }
-  validate_bool($default_originate)
-  $my_asn = $::quagga::bgpd::my_asn
+
+  include ::quagga::bgpd
+
+  $my_asn             = $::quagga::bgpd::my_asn
 
   if count($addr4) > 0 or count($addr6) > 0 {
     concat::fragment{"bgpd_peer_${name}":

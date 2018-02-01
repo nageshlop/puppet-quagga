@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'shared_contexts'
 
@@ -7,7 +9,7 @@ describe 'quagga' do
   # to the specific context in the spec/shared_contexts.rb file
   # Note: you can only use a single hiera context per describe/context block
   # rspec-puppet does not allow you to swap out hiera data on a per test block
-  #include_context :hiera
+  # include_context :hiera
 
   # below is the facts hash that gives you the ability to mock
   # facts on a per describe/context block.  If you use a fact in your
@@ -17,20 +19,21 @@ describe 'quagga' do
       let(:facts) do
         facts
       end
-  # below is a list of the resource parameters that you can override.
-  # By default all non-required parameters are commented out,
-  # while all required parameters will require you to add a value
+      # below is a list of the resource parameters that you can override.
+      # By default all non-required parameters are commented out,
+      # while all required parameters will require you to add a value
+      let(:params) do
+        {
+          #:owner => "quagga",
+          #:group => "quagga",
+          #:mode => "0664",
+          #:package => "quagga",
+          #:enable => true,
+          content: 'hostname test'
+        }
+      end
+
       describe 'check default parameters' do
-        let(:params) do
-          {
-            #:owner => "quagga",
-            #:group => "quagga",
-            #:mode => "0664",
-            #:package => "quagga",
-            #:enable => true,
-            content: 'hostname test'
-          }
-        end
         # add these two lines in a single test block to enable puppet and hiera debug mode
         # Puppet::Util::Log.level = :debug
         # Puppet::Util::Log.newdestination(:console)
@@ -39,107 +42,114 @@ describe 'quagga' do
         end
 
         it { is_expected.to contain_package('quagga') }
+        it { is_expected.to contain_class('Quagga') }
         it { is_expected.to contain_class('Quagga::Params') }
         it do
-          is_expected.to contain_file('/etc/quagga/zebra.conf')
-            .with(
-              'content' => 'hostname test',
-              'ensure'  => 'present',
-              'group'   => 'quagga',
-              'mode'    => '0664',
-              'notify'  => 'Service[quagga]',
-              'owner'   => 'quagga',
-            )
+          is_expected.to contain_file('/etc/quagga/zebra.conf').with(
+            content: 'hostname test',
+            ensure: 'present',
+            group: 'quagga',
+            mode: '0664',
+            notify: 'Service[quagga]',
+            owner: 'quagga'
+          )
         end
         it do
-          is_expected.to contain_file('/usr/local/bin/quagga_status.sh')
-            .with(
-              'content' => /pgrep -u quagga/,
-              'ensure'  => 'present',
-              'mode'    => '0555'
-            )
+          is_expected.to contain_file('/usr/local/bin/quagga_status.sh').with(
+            content: %r{pgrep -u quagga},
+            ensure: 'present',
+            mode: '0555'
+          )
         end
         it do
-          is_expected.to contain_file('/etc/profile.d/vtysh.sh')
-            .with(
-              'ensure' => 'present',
-              'source' => 'puppet:///modules/quagga/vtysh.sh'
-            )
+          is_expected.to contain_file('/etc/profile.d/vtysh.sh').with(
+            ensure: 'present',
+            source: 'puppet:///modules/quagga/vtysh.sh'
+          )
         end
         it do
-          is_expected.to contain_service('quagga')
-            .with(
-              'enable'    => 'true',
-              'ensure'    => 'running',
-              'hasstatus' => 'false',
-              'start'     => '/etc/init.d/quagga restart',
-              'status'    => '/usr/local/bin/quagga_status.sh'
-            )
+          is_expected.to contain_service('quagga').with(
+            enable: 'true',
+            ensure: 'running',
+            hasstatus: 'false',
+            start: '/etc/init.d/quagga restart',
+            status: '/usr/local/bin/quagga_status.sh'
+          )
         end
         it do
-          is_expected.to contain_ini_setting('zebra')
-            .with(
-              'setting' => 'zebra',
-              'value'   => 'yes'
-            )
+          is_expected.to contain_ini_setting('zebra').with(
+            setting: 'zebra',
+            value: 'yes'
+          )
         end
       end
 
       describe 'check changin default parameters' do
         context 'owner' do
-          let(:params) {{ owner: 'foo' }}
+          before { params.merge!(owner: 'foo') }
           it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_owner('foo') }
-          it { is_expected.to contain_file('/usr/local/bin/quagga_status.sh').with_content(
-          /pgrep -u foo/) }
+          it do
+            is_expected.to contain_file(
+              '/usr/local/bin/quagga_status.sh'
+            ).with_content(
+              %r{pgrep -u foo}
+            )
+          end
         end
         context 'group' do
-          let(:params) {{ group: 'foo' }}
+          before { params.merge!(group: 'foo') }
           it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_group('foo') }
         end
         context 'mode' do
-          let(:params) {{ mode: '0600' }}
+          before { params.merge!(mode: '0600') }
           it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_mode('0600') }
         end
         context 'package' do
-          let(:params) {{ package: 'foo' }}
+          before { params.merge!(package: 'foo') }
           it { is_expected.to contain_package('foo') }
         end
         context 'enable' do
-          let(:params) {{ enable: false }}
-          it { is_expected.to contain_ini_setting('zebra').with(
-            setting: 'zebra',
-            value:   'no',
-          ) }
+          before { params.merge!(enable: false) }
+          it do
+            is_expected.to contain_ini_setting('zebra').with(
+              setting: 'zebra',
+              value:   'no'
+            )
+          end
         end
         context 'content' do
-          let(:params) {{ content: 'foo' }}
-          it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_content(/foo/) }
+          before { params.merge!(content: 'foo') }
+          it do
+            is_expected.to contain_file('/etc/quagga/zebra.conf').with_content(
+              %r{foo}
+            )
+          end
         end
       end
 
       describe 'check bad parameters' do
         context 'owner' do
-          let(:params) {{ owner: true }}
+          before { params.merge!(owner: true) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'group' do
-          let(:params) {{ group: [] }}
+          before { params.merge!(group: []) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'mode' do
-          let(:params) {{ mode: 'foo' }}
+          before { params.merge!(mode: 'foo') }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'package' do
-          let(:params) {{ package: {} }}
+          before { params.merge!(package: {}) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'enable' do
-          let(:params) {{ enable: 'false' }}
+          before { params.merge!(enable: 'false') }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
         context 'content' do
-          let(:params) {{ content: [] }}
+          before { params.merge!(content: []) }
           it { expect { subject.call }.to raise_error(Puppet::Error) }
         end
       end
