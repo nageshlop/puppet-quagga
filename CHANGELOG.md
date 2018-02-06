@@ -1,3 +1,6 @@
+## 2016-08-09 0.4.1
+* update dependencies
+
 ## 2016-08-09 0.4.0
 * add support to reject recived prefixes
 
