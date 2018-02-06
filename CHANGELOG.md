@@ -1,3 +1,6 @@
+## 2016-08-09 0.4.3
+* update dependencies
+
 ## 2016-08-09 0.4.2
 * update dependencies
 
