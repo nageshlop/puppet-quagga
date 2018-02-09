@@ -1,3 +1,6 @@
+## 2018-02-08 0.4.5
+* FIX: prefix lists have to have a le value greater then the prefix size
+
 ## 2018-02-08 0.4.4
 * update dependencies
 
