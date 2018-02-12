@@ -16,6 +16,7 @@ class quagga::bgpd (
   Boolean                         $enable_advertisements_v6 = true,
   Boolean                         $manage_nagios            = false,
   Stdlib::Absolutepath            $conf_file                = '/etc/quagga/bgpd.conf',
+  Stdlib::Absolutepath            $bgpd_cmd                 = '/usr/lib/quagga/bgpd',
   Optional[Array]                 $debug_bgp                = [],
   Boolean                         $log_stdout               = false,
   Quagga::Log_level               $log_stdout_level         = 'debugging',
@@ -55,8 +56,9 @@ class quagga::bgpd (
     }
   }
   concat{$conf_file:
-    require => Package[ $::quagga::package ],
-    notify  => Service['quagga'],
+    require      => Package[ $::quagga::package ],
+    notify       => Service['quagga'],
+    validate_cmd => "${bgpd_cmd} -C -f ${conf_file}",
   }
   concat::fragment{ 'quagga_bgpd_head':
     target  => $conf_file,
