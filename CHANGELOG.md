@@ -1,4 +1,7 @@
-## 2018-02-08 0.4.7
+## 2018-02-12 0.4.8
+* FIX: correct validate\_cmd string
+
+## 2018-02-12 0.4.7
 * add validate\_cmd to concat file
 
 ## 2018-02-08 0.4.6
