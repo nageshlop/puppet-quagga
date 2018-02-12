@@ -58,7 +58,7 @@ class quagga::bgpd (
   concat{$conf_file:
     require      => Package[ $::quagga::package ],
     notify       => Service['quagga'],
-    validate_cmd => "${bgpd_cmd} -C -f ${conf_file}",
+    validate_cmd => "${bgpd_cmd} -C -f %",
   }
   concat::fragment{ 'quagga_bgpd_head':
     target  => $conf_file,
