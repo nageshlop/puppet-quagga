@@ -1,3 +1,6 @@
+## 2018-02-08 0.4.7
+* add validate\_cmd to concat file
+
 ## 2018-02-08 0.4.6
 * FIX: error with reject prefix ACL and add spec tests
 
