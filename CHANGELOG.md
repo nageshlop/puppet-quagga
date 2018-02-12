@@ -1,3 +1,6 @@
+## 2018-02-08 0.4.6
+* FIX: error with reject prefix ACL and add spec tests
+
 ## 2018-02-08 0.4.5
 * FIX: prefix lists have to have a le value greater then the prefix size
 

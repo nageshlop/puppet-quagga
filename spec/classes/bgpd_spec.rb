@@ -23,6 +23,8 @@ describe 'quagga::bgpd' do
       failsafe_networks4: ['192.0.2.0/24'],
       networks6: ['2001:DB8::/48'],
       failsafe_networks6: ['2001:DB8::/32'],
+      rejected_v4: ['10.0.0.0/8', '192.168.0.0/24'],
+      rejected_v6: ['ff00::/8', '2001:db8:1::/48'],
       failover_server: false,
       enable_advertisements: true,
       enable_advertisements_v4: true,
@@ -130,7 +132,11 @@ describe 'quagga::bgpd' do
           ).with_content(
             %r{ip prefix-list deny-default-route seq 1 deny 0.0.0.0\/0}
           ).with_content(
-            %r{ip prefix-list deny-default-route seq 2 permit 0.0.0.0\/0 le 24}
+            %r{ip prefix-list deny-default-route seq 2 deny 10.0.0.0\/8 le 24}
+          ).with_content(
+            %r{ip prefix-list deny-default-route seq 3 deny 192.168.0.0/24$}
+          ).with_content(
+            %r{ip prefix-list deny-default-route seq 4 permit 0.0.0.0\/0 le 24}
           ).without_content(
             %r{ip prefix-list prefix-v4 seq 1 deny any}
           ).with_content(
@@ -146,7 +152,11 @@ describe 'quagga::bgpd' do
           ).with_content(
             %r{ipv6 prefix-list deny-default-route seq 1 deny ::\/0}
           ).with_content(
-            %r{ipv6 prefix-list deny-default-route seq 2 permit ::\/0 le 48}
+            %r{ipv6 prefix-list deny-default-route seq 2 deny ff00::/8 le 48}
+          ).with_content(
+            %r{ipv6 prefix-list deny-default-route seq 3 deny 2001:db8:1::/48$}
+          ).with_content(
+            %r{ipv6 prefix-list deny-default-route seq 4 permit ::\/0 le 48}
           ).without_content(
             %r{ipv6 prefix-list prefix-v6 seq 1 deny any}
           ).with_content(
