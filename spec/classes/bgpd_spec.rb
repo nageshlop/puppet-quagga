@@ -132,11 +132,15 @@ describe 'quagga::bgpd' do
           ).with_content(
             %r{ip prefix-list deny-default-route seq 1 deny 0.0.0.0\/0}
           ).with_content(
-            %r{ip prefix-list deny-default-route seq 2 deny 10.0.0.0\/8 le 24}
+            %r{ip prefix-list deny-default-route seq 3 deny 10.0.0.0\/8 le 24}
           ).with_content(
-            %r{ip prefix-list deny-default-route seq 3 deny 192.168.0.0/24$}
+            %r{ip prefix-list deny-default-route seq 11 deny 192.168.0.0/16 le 24$}
           ).with_content(
-            %r{ip prefix-list deny-default-route seq 4 permit 0.0.0.0\/0 le 24}
+            %r{ip prefix-list deny-default-route seq 16 deny 10.0.0.0\/8 le 24}
+          ).with_content(
+            %r{ip prefix-list deny-default-route seq 17 deny 192.168.0.0/24$}
+          ).with_content(
+            %r{ip prefix-list deny-default-route seq 18 permit 0.0.0.0\/0 le 24}
           ).without_content(
             %r{ip prefix-list prefix-v4 seq 1 deny any}
           ).with_content(
@@ -152,11 +156,17 @@ describe 'quagga::bgpd' do
           ).with_content(
             %r{ipv6 prefix-list deny-default-route seq 1 deny ::\/0}
           ).with_content(
-            %r{ipv6 prefix-list deny-default-route seq 2 deny ff00::/8 le 48}
+            %r{ipv6 prefix-list deny-default-route seq 2 deny 3ffe::/16 le 48}
           ).with_content(
-            %r{ipv6 prefix-list deny-default-route seq 3 deny 2001:db8:1::/48$}
+            %r{ipv6 prefix-list deny-default-route seq 9 deny 0800::/5 le 48}
           ).with_content(
-            %r{ipv6 prefix-list deny-default-route seq 4 permit ::\/0 le 48}
+            %r{ipv6 prefix-list deny-default-route seq 25 deny ff00::/8 le 48}
+          ).with_content(
+            %r{ipv6 prefix-list deny-default-route seq 25 deny ff00::/8 le 48}
+          ).with_content(
+            %r{ipv6 prefix-list deny-default-route seq 26 deny 2001:db8:1::/48$}
+          ).with_content(
+            %r{ipv6 prefix-list deny-default-route seq 27 permit ::\/0 le 48}
           ).without_content(
             %r{ipv6 prefix-list prefix-v6 seq 1 deny any}
           ).with_content(
@@ -182,6 +192,41 @@ describe 'quagga::bgpd' do
         end
       end
       describe 'Change Defaults' do
+        context 'reject_bogons_v4: false' do
+          before { params.merge!(reject_bogons_v4: false) }
+          it { is_expected.to compile }
+          it do 
+            is_expected.to contain_concat__fragment(
+              'quagga_bgpd_acl'
+            ).with_content(
+              %r{ip prefix-list deny-default-route seq 1 deny 0.0.0.0\/0}
+            ).with_content(
+              %r{ip prefix-list deny-default-route seq 2 deny 10.0.0.0\/8 le 24}
+            ).with_content(
+              %r{ip prefix-list deny-default-route seq 3 deny 192.168.0.0/24$}
+            ).with_content(
+              %r{ip prefix-list deny-default-route seq 4 permit 0.0.0.0\/0 le 24}
+            )
+          end
+        end
+        context 'reject_bogons_v6: false' do
+          before { params.merge!(reject_bogons_v6: false) }
+          it { is_expected.to compile }
+          it do 
+            is_expected.to contain_concat__fragment(
+              'quagga_bgpd_acl'
+            ).with_content(
+              %r{ipv6 prefix-list deny-default-route seq 1 deny ::\/0}
+            ).with_content(
+              %r{ipv6 prefix-list deny-default-route seq 2 deny ff00::/8 le 48}
+            ).with_content(
+              %r{ipv6 prefix-list deny-default-route seq 3 deny 2001:db8:1::/48$}
+            ).with_content(
+              %r{ipv6 prefix-list deny-default-route seq 4 permit ::/0 le 48}
+            )
+          end
+        end
+
         context 'networks4' do
           before { params.merge!(networks4: ['192.0.2.0/25', '10.0.0.0/24']) }
           it { is_expected.to compile }
