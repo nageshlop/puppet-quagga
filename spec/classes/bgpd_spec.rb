@@ -195,7 +195,7 @@ describe 'quagga::bgpd' do
         context 'reject_bogons_v4: false' do
           before { params.merge!(reject_bogons_v4: false) }
           it { is_expected.to compile }
-          it do 
+          it do
             is_expected.to contain_concat__fragment(
               'quagga_bgpd_acl'
             ).with_content(
@@ -212,7 +212,7 @@ describe 'quagga::bgpd' do
         context 'reject_bogons_v6: false' do
           before { params.merge!(reject_bogons_v6: false) }
           it { is_expected.to compile }
-          it do 
+          it do
             is_expected.to contain_concat__fragment(
               'quagga_bgpd_acl'
             ).with_content(
