@@ -1,3 +1,6 @@
+## 2018-02-13 0.4.9
+* Add bogon filters
+
 ## 2018-02-12 0.4.8
 * FIX: correct validate\_cmd string
 
