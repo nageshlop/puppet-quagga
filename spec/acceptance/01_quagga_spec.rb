@@ -22,6 +22,8 @@ describe 'quagga class' do
       my_asn => 64496,
       router_id => '192.0.2.1',
       networks4 => [ '192.0.2.0/24'],
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '64497' => {
           'addr4' => ['192.0.2.2'],
@@ -60,6 +62,8 @@ describe 'quagga class' do
       my_asn => 64496,
       router_id => '192.0.2.1',
       networks6 => [ '2001:DB8::/48'],
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '64497' => {
           'addr6' => ['2001:DB8::2'],
@@ -99,6 +103,8 @@ describe 'quagga class' do
       router_id => '192.0.2.1',
       networks4 => [ '192.0.2.0/24'],
       networks6 => [ '2001:DB8::/48'],
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '64497' => {
           'addr4' => ['192.0.2.2'],

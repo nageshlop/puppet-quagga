@@ -27,6 +27,8 @@ describe 'quagga class ACLs ' do
     class { '::quagga::bgpd':
       my_asn => #{router1_asn},
       router_id => '#{router1_ip}',
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '#{router2_asn}' => {
           'addr4'          => ['#{router2_ip}'],
@@ -42,6 +44,8 @@ describe 'quagga class ACLs ' do
     class { '::quagga::bgpd':
       my_asn => #{router2_asn},
       router_id => '#{router2_ip}',
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       networks4 => [
         '#{ipv4_network}',
         '#{additional_v4_network1}',
@@ -122,6 +126,8 @@ describe 'quagga class ACLs ' do
     class { '::quagga::bgpd':
       my_asn => #{router1_asn},
       router_id => '#{router1_ip}',
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '#{router2_asn}' => {
           'addr4'          => ['#{router2_ip}'],
@@ -175,6 +181,8 @@ describe 'quagga class ACLs ' do
       router_id => '#{router1_ip}',
       rejected_v4 => ['#{additional_v4_network1}'],
       rejected_v6 => ['#{additional_v6_network1}'],
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '#{router2_asn}' => {
           'addr4'          => ['#{router2_ip}'],
@@ -218,6 +226,8 @@ describe 'quagga class ACLs ' do
     class { '::quagga::bgpd':
       my_asn => #{router1_asn},
       router_id => '#{router1_ip}',
+      reject_bogons_v4 => false,
+      reject_bogons_v6 => false,
       peers => {
         '#{router2_asn}' => {
           'addr4'          => ['#{router2_ip}'],
