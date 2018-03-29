@@ -1,3 +1,6 @@
+## 2018-03-29 0.4.10
+* Add dependecy for package on all ini settings
+
 ## 2018-02-13 0.4.9
 * Add bogon filters
 

@@ -1,6 +1,6 @@
 {
   "name": "icann-quagga",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "author": "john.bond@icann.org",
   "summary": "puppet module to manage Quagga",
   "license": "Apache-2.0",
@@ -8,7 +8,7 @@
   "project_page": "https://github.com/icann-dns/puppet-quagga",
   "issues_url": "https://github.com/icann-dns/puppet-quagga/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 4.24.0 <5.0.0"},
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.25.0 <5.0.0"},
     {"name":"puppetlabs-inifile","version_requirement":">= 1.5.0 <3.0.0"},
     {"name":"puppetlabs-concat","version_requirement":">= 4.1.1 <5.0.0"},
     {"name":"icann-tea","version_requirement":">= 0.2.8 <1.0.0"},
