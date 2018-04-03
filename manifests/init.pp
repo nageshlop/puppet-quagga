@@ -2,17 +2,18 @@
 #
 # Quagga routing server.
 class quagga (
-  String           $owner   = 'quagga',
-  String           $group   = 'quagga',
-  Pattern[/^\d+$/] $mode    = '0664',
-  String           $package = 'quagga',
-  Boolean          $enable  = true,
-  String           $content = $::quagga::params::content,
+  String                       $owner   = 'quagga',
+  String                       $group   = 'quagga',
+  Pattern[/^\d+$/]             $mode    = '0664',
+  String                       $package = 'quagga',
+  Boolean                      $enable  = true,
+  String                       $content = $::quagga::params::content,
+  Optional[Stdlib::Ip_address] $bgp_listenon = undef
 ) inherits ::quagga::params {
 
   ensure_packages([$package])
   file { '/etc/quagga/zebra.conf':
-    ensure  => present,
+    ensure  => file,
     owner   => $owner,
     group   => $group,
     mode    => $mode,
@@ -20,13 +21,22 @@ class quagga (
     require => Package[ $package ],
     notify  => Service['quagga'],
   }
+  file { '/etc/quagga/debian.conf':
+    ensure  => file,
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
+    content => template('quagga/debian.conf.erb'),
+    require => Package[ $package ],
+    notify  => Service['quagga'],
+  }
   file {'/usr/local/bin/quagga_status.sh':
-    ensure  => present,
+    ensure  => file,
     mode    => '0555',
     content => template('quagga/quagga_status.sh.erb'),
   }
   file {'/etc/profile.d/vtysh.sh':
-    ensure => present,
+    ensure => file,
     source => 'puppet:///modules/quagga/vtysh.sh',
   }
 

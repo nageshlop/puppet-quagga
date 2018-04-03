@@ -1,15 +1,15 @@
 # quagga::bgpd::peer
 #
 define quagga::bgpd::peer (
-  Optional[Array[Stdlib::Compat::Ipv4]] $addr4             = [],
-  Optional[Array[Stdlib::Compat::Ipv6]] $addr6             = [],
-  String                                $desc              = undef,
-  Quagga::Routes_acl                    $inbound_routes    = 'none',
-  Optional[Array]                       $communities       = [],
-  Optional[Integer[1,254]]              $multihop          = undef,
-  Optional[String]                      $password          = undef,
-  Optional[Integer[1,32]]               $prepend           = undef,
-  Boolean                               $default_originate = false,
+  Optional[Array[Stdlib::Ipv4]] $addr4             = [],
+  Optional[Array[Stdlib::Ipv6]] $addr6             = [],
+  String                        $desc              = undef,
+  Quagga::Routes_acl            $inbound_routes    = 'none',
+  Optional[Array]               $communities       = [],
+  Optional[Integer[1,254]]      $multihop          = undef,
+  Optional[String]              $password          = undef,
+  Optional[Integer[1,32]]       $prepend           = undef,
+  Boolean                       $default_originate = false,
 ) {
 
   include ::quagga::bgpd
