@@ -47,7 +47,7 @@ describe 'quagga' do
         it do
           is_expected.to contain_file('/etc/quagga/zebra.conf').with(
             content: 'hostname test',
-            ensure: 'present',
+            ensure: 'file',
             group: 'quagga',
             mode: '0664',
             notify: 'Service[quagga]',
@@ -57,13 +57,13 @@ describe 'quagga' do
         it do
           is_expected.to contain_file('/usr/local/bin/quagga_status.sh').with(
             content: %r{pgrep -u quagga},
-            ensure: 'present',
+            ensure: 'file',
             mode: '0555'
           )
         end
         it do
           is_expected.to contain_file('/etc/profile.d/vtysh.sh').with(
-            ensure: 'present',
+            ensure: 'file',
             source: 'puppet:///modules/quagga/vtysh.sh'
           )
         end
