@@ -58,10 +58,11 @@ class quagga::bgpd (
       value   => 'no',
     }
   }
+  # we run validate as root the tmpfile is created with 0600
   concat{$conf_file:
     require      => Package[ $::quagga::package ],
     notify       => Service['quagga'],
-    validate_cmd => "${bgpd_cmd} -C -f %",
+    validate_cmd => "${bgpd_cmd} -u root -C -f %",
   }
   concat::fragment{ 'quagga_bgpd_head':
     target  => $conf_file,
