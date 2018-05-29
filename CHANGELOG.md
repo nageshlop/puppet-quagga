@@ -1,3 +1,6 @@
+## 2018-04-03 0.5.0
+* run validate command as root user
+
 ## 2018-04-03 0.4.11
 * Add abbility to specify listen address for bgp
 
