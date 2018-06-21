@@ -8,17 +8,43 @@
   "project_page": "https://github.com/icann-dns/puppet-quagga",
   "issues_url": "https://github.com/icann-dns/puppet-quagga/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 4.25.0 <5.0.0"},
-    {"name":"puppetlabs-inifile","version_requirement":">= 1.5.0 <3.0.0"},
-    {"name":"puppetlabs-concat","version_requirement":">= 4.1.1 <5.0.0"},
-    {"name":"icann-tea","version_requirement":">= 0.2.8 <1.0.0"},
-    {"name":"puppet-logrotate","version_requirement":">= 3.2.0 <4.0.0"}
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.25.0 <5.0.0"
+    },
+    {
+      "name": "puppetlabs-inifile",
+      "version_requirement": ">= 1.5.0 <3.0.0"
+    },
+    {
+      "name": "puppetlabs-concat",
+      "version_requirement": ">= 4.1.1 <5.0.0"
+    },
+    {
+      "name": "icann-tea",
+      "version_requirement": ">= 0.2.8 <1.0.0"
+    },
+    {
+      "name": "puppet-logrotate",
+      "version_requirement": ">= 3.2.0 <4.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem" : "Ubuntu",
-      "operatingsystemrelease" : [ "14.04", "16.04" ]
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04",
+        "16.04"
+      ]
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 6.0.0"
+    }
+  ],
+  "pdk-version": "1.5.0",
+  "template-url": "https://github.com/icann-dns/pdk-templates",
+  "template-ref": "heads/master-0-gdd0e3c6"
 }
-
