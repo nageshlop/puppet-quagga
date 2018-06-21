@@ -1,5 +1,6 @@
 ## 2018-04-03 0.5.1
-* Manage user permissions of bgpd.conf file and pass correct user to validate command
+* BUG: quagga does does not set CAP\_DAC\_OVERRIDE  when switching users even if switching to the root user.  therefore we need to manage user permissions of bgpd.conf file and pass correct user to the validate command
+* convert to PDK
 
 ## 2018-04-03 0.5.0
 * run validate command as root user
