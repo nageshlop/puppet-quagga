@@ -39,7 +39,7 @@ class quagga::bgpd (
   Hash                            $peers                    = {},
 ) {
 
-  include ::quagga
+  include quagga
 
   Ini_setting {
     path    => '/etc/quagga/daemons',
@@ -62,7 +62,9 @@ class quagga::bgpd (
   concat{$conf_file:
     require      => Package[ $::quagga::package ],
     notify       => Service['quagga'],
-    validate_cmd => "${bgpd_cmd} -u root -C -f %",
+    owner        => $::quagga::owner,
+    group        => $::quagga::group,
+    validate_cmd => "${bgpd_cmd} -u ${quagga::owner} -C -f %",
   }
   concat::fragment{ 'quagga_bgpd_head':
     target  => $conf_file,
