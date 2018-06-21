@@ -17,4 +17,5 @@ Gemfile:
       - gem: beaker-rspec
         from_env: BEAKER_RSPEC_VERSION
       - gem: beaker-testmode_switcher
+      - gem: progressbar
 
