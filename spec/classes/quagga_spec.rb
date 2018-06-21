@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'shared_contexts'
 
 describe 'quagga' do
   # by default the hiera integration uses hiera data from the shared_contexts.rb file
@@ -29,7 +28,7 @@ describe 'quagga' do
           #:mode => "0664",
           #:package => "quagga",
           #:enable => true,
-          content: 'hostname test'
+          content: 'hostname test',
         }
       end
 
@@ -51,20 +50,20 @@ describe 'quagga' do
             group: 'quagga',
             mode: '0664',
             notify: 'Service[quagga]',
-            owner: 'quagga'
+            owner: 'quagga',
           )
         end
         it do
           is_expected.to contain_file('/usr/local/bin/quagga_status.sh').with(
             content: %r{pgrep -u quagga},
             ensure: 'file',
-            mode: '0555'
+            mode: '0555',
           )
         end
         it do
           is_expected.to contain_file('/etc/profile.d/vtysh.sh').with(
             ensure: 'file',
-            source: 'puppet:///modules/quagga/vtysh.sh'
+            source: 'puppet:///modules/quagga/vtysh.sh',
           )
         end
         it do
@@ -73,55 +72,55 @@ describe 'quagga' do
             ensure: 'running',
             hasstatus: 'false',
             start: '/etc/init.d/quagga restart',
-            status: '/usr/local/bin/quagga_status.sh'
+            status: '/usr/local/bin/quagga_status.sh',
           )
         end
         it do
           is_expected.to contain_ini_setting('zebra').with(
             setting: 'zebra',
-            value: 'yes'
+            value: 'yes',
           )
         end
       end
 
       describe 'check changin default parameters' do
         context 'owner' do
-          before { params.merge!(owner: 'foo') }
+          before(:each) { params.merge!(owner: 'foo') }
           it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_owner('foo') }
           it do
             is_expected.to contain_file(
-              '/usr/local/bin/quagga_status.sh'
+              '/usr/local/bin/quagga_status.sh',
             ).with_content(
-              %r{pgrep -u foo}
+              %r{pgrep -u foo},
             )
           end
         end
         context 'group' do
-          before { params.merge!(group: 'foo') }
+          before(:each) { params.merge!(group: 'foo') }
           it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_group('foo') }
         end
         context 'mode' do
-          before { params.merge!(mode: '0600') }
+          before(:each) { params.merge!(mode: '0600') }
           it { is_expected.to contain_file('/etc/quagga/zebra.conf').with_mode('0600') }
         end
         context 'package' do
-          before { params.merge!(package: 'foo') }
+          before(:each) { params.merge!(package: 'foo') }
           it { is_expected.to contain_package('foo') }
         end
         context 'enable' do
-          before { params.merge!(enable: false) }
+          before(:each) { params.merge!(enable: false) }
           it do
             is_expected.to contain_ini_setting('zebra').with(
               setting: 'zebra',
-              value:   'no'
+              value:   'no',
             )
           end
         end
         context 'content' do
-          before { params.merge!(content: 'foo') }
+          before(:each) { params.merge!(content: 'foo') }
           it do
             is_expected.to contain_file('/etc/quagga/zebra.conf').with_content(
-              %r{foo}
+              %r{foo},
             )
           end
         end
@@ -129,28 +128,28 @@ describe 'quagga' do
 
       describe 'check bad parameters' do
         context 'owner' do
-          before { params.merge!(owner: true) }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          before(:each) { params.merge!(owner: true) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'group' do
-          before { params.merge!(group: []) }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          before(:each) { params.merge!(group: []) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'mode' do
-          before { params.merge!(mode: 'foo') }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          before(:each) { params.merge!(mode: 'foo') }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'package' do
-          before { params.merge!(package: {}) }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          before(:each) { params.merge!(package: {}) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'enable' do
-          before { params.merge!(enable: 'false') }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          before(:each) { params.merge!(enable: 'false') }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
         context 'content' do
-          before { params.merge!(content: []) }
-          it { expect { subject.call }.to raise_error(Puppet::Error) }
+          before(:each) { params.merge!(content: []) }
+          it { is_expected.to raise_error(Puppet::Error) }
         end
       end
     end

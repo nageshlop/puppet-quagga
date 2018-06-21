@@ -10,7 +10,7 @@ modules = [
   'puppetlabs-concat',
   'puppetlabs-inifile',
   'puppet-logrotate',
-  'icann-tea'
+  'icann-tea',
 ]
 git_repos = []
 def install_modules(host, modules, git_repos)
@@ -64,7 +64,7 @@ else
       host,
       version: '4',
       puppet_agent_version: '1.6.1',
-      default_action: 'gem_install'
+      default_action: 'gem_install',
     )
     install_modules(host, modules, git_repos)
   end

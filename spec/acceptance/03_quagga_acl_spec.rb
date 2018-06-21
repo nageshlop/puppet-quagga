@@ -149,12 +149,12 @@ describe 'quagga class ACLs ' do
     describe command('vtysh -c \'show ip bgp \'') do
       its(:stdout) do
         is_expected.to match(
-          %r{192.0.2.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}}
+          %r{192.0.2.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}},
         )
       end
       its(:stdout) do
         is_expected.to match(
-          %r{198.51.100.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}}
+          %r{198.51.100.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}},
         )
       end
       its(:stdout) { is_expected.not_to match(%r{0.0.0.0}) }
@@ -162,12 +162,12 @@ describe 'quagga class ACLs ' do
     describe command('vtysh -c \'show ipv6 bgp \'') do
       its(:stdout) do
         is_expected.to match(
-          %r{#{additional_v6_network1}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}}
+          %r{#{additional_v6_network1}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}},
         )
       end
       its(:stdout) do
         is_expected.to match(
-          %r{#{additional_v6_network2}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}}
+          %r{#{additional_v6_network2}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}},
         )
       end
       its(:stdout) { is_expected.not_to match(%r{::\/0}) }
@@ -205,7 +205,7 @@ describe 'quagga class ACLs ' do
       its(:stdout) { is_expected.not_to match(%r{192.0.2.0}) }
       its(:stdout) do
         is_expected.to match(
-          %r{198.51.100.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}}
+          %r{198.51.100.0\s+#{router2_ip}\s+\d+\s+\d+\s+#{router2_asn}},
         )
       end
       its(:stdout) { is_expected.not_to match(%r{0.0.0.0}) }
@@ -214,7 +214,7 @@ describe 'quagga class ACLs ' do
       its(:stdout) { is_expected.not_to match(%r{#{additional_v6_network1}}) }
       its(:stdout) do
         is_expected.to match(
-          %r{#{additional_v6_network2}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}}
+          %r{#{additional_v6_network2}\s+#{router2_ip6}\s+\d+\s+\d+\s+#{router2_asn}},
         )
       end
       its(:stdout) { is_expected.not_to match(%r{::\/0}) }
