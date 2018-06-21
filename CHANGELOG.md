@@ -1,3 +1,6 @@
+## 2018-04-03 0.5.1
+* Manage user permissions of bgpd.conf file and pass correct user to validate command
+
 ## 2018-04-03 0.5.0
 * run validate command as root user
 
