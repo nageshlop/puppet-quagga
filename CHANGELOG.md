@@ -1,3 +1,6 @@
+## 2018-04-03 0.5.2
+* the validate command is still not working as expected so i have implmented a work around pending [PUP-8983](https://tickets.puppetlabs.com/browse/PUP-8983)
+
 ## 2018-04-03 0.5.1
 * BUG: quagga does does not set CAP\_DAC\_OVERRIDE  when switching users even if switching to the root user.  therefore we need to manage user permissions of bgpd.conf file and pass correct user to the validate command
 * convert to PDK
