@@ -58,7 +58,19 @@ class quagga::bgpd (
       value   => 'no',
     }
   }
-  # we run validate as root the tmpfile is created with 0600
+  # the quagga validate command runs without CAP_DAC_OVERRIDE
+  # this means that even if running the command as root it cant
+  # read files owned by !root
+  # further to this the validate command is indeterminate. if the
+  # file allready exists then the temp file created for the validate_cmd 
+  # has the permissions of the original user.  if the file does not exits
+  # then the temp file is created with root user permissions.  
+  # As such we need this hack
+  exec{ "/usr/bin/touch ${conf_file}":
+    creates => $conf_file,
+    user    => $::quagga::owner,
+    before  => Concat[$conf_file],
+  }
   concat{$conf_file:
     require      => Package[ $::quagga::package ],
     notify       => Service['quagga'],
