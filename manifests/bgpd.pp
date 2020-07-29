@@ -4,6 +4,7 @@ class quagga::bgpd (
   Integer[1,4294967295]           $my_asn                   = undef,
   Stdlib::Ipv4                    $router_id                = undef,
   Boolean                         $enable                   = true,
+  Boolean                         $stage_config             = false,
   Optional[Array[Tea::Ipv4_cidr]] $networks4                = [],
   Optional[Array[Tea::Ipv4_cidr]] $failsafe_networks4       = [],
   Optional[Array[Tea::Ipv6_cidr]] $networks6                = [],
@@ -71,12 +72,21 @@ class quagga::bgpd (
     user    => $::quagga::owner,
     before  => Concat[$conf_file],
   }
-  concat{$conf_file:
-    require      => Package[ $::quagga::package ],
-    notify       => Service['quagga'],
-    owner        => $::quagga::owner,
-    group        => $::quagga::group,
-    validate_cmd => "${bgpd_cmd} -u ${quagga::owner} -C -f %",
+  if $stage_config {
+    concat{$conf_file:
+      require      => Package[ $::quagga::package ],
+      owner        => $::quagga::owner,
+      group        => $::quagga::group,
+      validate_cmd => "${bgpd_cmd} -u ${quagga::owner} -C -f %",
+    }
+  } else {
+    concat{$conf_file:
+      require      => Package[ $::quagga::package ],
+      notify       => Service['quagga'],
+      owner        => $::quagga::owner,
+      group        => $::quagga::group,
+      validate_cmd => "${bgpd_cmd} -u ${quagga::owner} -C -f %",
+    }
   }
   concat::fragment{ 'quagga_bgpd_head':
     target  => $conf_file,
