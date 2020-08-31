@@ -82,7 +82,7 @@ class quagga::bgpd (
   } else {
     concat{$conf_file:
       require      => Package[ $::quagga::package ],
-      notify       => Service['quagga'],
+      notify       => Service[ $::quagga::service ],
       owner        => $::quagga::owner,
       group        => $::quagga::group,
       validate_cmd => "${bgpd_cmd} -u ${quagga::owner} -C -f %",
