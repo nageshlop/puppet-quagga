@@ -150,6 +150,7 @@ class { '::quagga::bgpd':
 * `quagga_content` (String, Default: 'hostname ${::fqdn}'): content of the quagga config
 * `enable_zebra` (Bool, Default: true): determin if we should enable zebra
 * `package` (String, Default: quagga): package to install
+* `service` (String, Default: quagga): service name
 
 #### Class: `quagga::bgpd`
   configure BGP settings
@@ -158,6 +159,8 @@ class { '::quagga::bgpd':
 
 * `my_asn` (Int, Default: undef): The local ASN to use
 * `router_id` (IP Address, Default: undef): IP address for the router ID
+* `enable` (Bool, Default: true): enable bgpd.
+* `stage_config` (Bool, Default: false): allow to stage configuration without service refresh.
 * `networks4` (Array, Default: []): Array ip IPv4 networks in CIDR format to configure
 * `failsafe_networks4` (Array, Default: []): Array ip IPv4 failsafe networks in CIDR format to configure.  Failsafe networks consist of covering prefixes for the IPv4 networks.  if the policy decided to disable advertising due to detected errors it will leave the failsafe network inplace.  This is a specific use case for anycast networks which effectivly disables an anycast node as all others will still be advertising a more specific network; however if something goes wrong and all nodes have the most specific route removed then we would still have this failsafe network in place.  
 * `networks6` (Array, Default: []): Array ip IPv6 networks in CIDR format to configure

@@ -6,6 +6,7 @@ class quagga (
   String                       $group   = 'quagga',
   Pattern[/^\d+$/]             $mode    = '0664',
   String                       $package = 'quagga',
+  String                       $service = 'quagga',
   Boolean                      $enable  = true,
   String                       $content = $::quagga::params::content,
   Optional[Stdlib::Ip_address] $bgp_listenon = undef
@@ -19,7 +20,7 @@ class quagga (
     mode    => $mode,
     content => $content,
     require => Package[ $package ],
-    notify  => Service['quagga'],
+    notify  => Service[ $service ],
   }
   file { '/etc/quagga/debian.conf':
     ensure  => file,
@@ -28,7 +29,7 @@ class quagga (
     mode    => $mode,
     content => template('quagga/debian.conf.erb'),
     require => Package[ $package ],
-    notify  => Service['quagga'],
+    notify  => Service[ $service ],
   }
   file {'/usr/local/bin/quagga_status.sh':
     ensure  => file,
@@ -40,12 +41,11 @@ class quagga (
     source => 'puppet:///modules/quagga/vtysh.sh',
   }
 
-  service { 'quagga':
+  service { $service:
     ensure    => running,
     enable    => true,
     hasstatus => false,
     status    => '/usr/local/bin/quagga_status.sh',
-    start     => '/etc/init.d/quagga restart',
     require   => [
       Package[ $package ],
       File['/etc/quagga/zebra.conf', '/usr/local/bin/quagga_status.sh']
@@ -56,7 +56,7 @@ class quagga (
     path    => '/etc/quagga/daemons',
     section => '',
     require => Package[ $package ],
-    notify  => Service['quagga'],
+    notify  => Service[ $service ],
   }
   if $enable {
     ini_setting {

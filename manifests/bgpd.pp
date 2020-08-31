@@ -45,7 +45,7 @@ class quagga::bgpd (
   Ini_setting {
     path    => '/etc/quagga/daemons',
     section => '',
-    notify  => Service['quagga'],
+    notify  => Service[ $::quagga::service ],
     require => Package[ $::quagga::package ],
   }
   if $enable {
