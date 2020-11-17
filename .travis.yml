@@ -1,6 +1,9 @@
 ---
 sudo: false
 dist: trusty
+arch:
+  - amd64
+  - ppc64le
 language: ruby
 cache: bundler
 before_install:
